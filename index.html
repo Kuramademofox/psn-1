@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PSNS | Home</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* GLOBAL SETTINGS */
+      :root {
+        --bg-deep: #030303;
+        --accent-cyan: #00f3ff;
+        --accent-purple: #bc13fe;
+        --accent-green: #00ff41;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+      body {
+        background-color: var(--bg-deep);
+        color: white;
+        font-family: "Space Grotesk", sans-serif;
+        cursor: crosshair;
+        overflow-x: hidden;
+      }
+      .font-header {
+        font-family: "Syncopate", sans-serif;
+        text-transform: uppercase;
+      }
+
+      /* NAVIGATION */
+      nav {
+        background: rgba(3, 3, 3, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: 0.3s;
+      }
+      .nav-item {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      /* DROPDOWNS */
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #0a0a0a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: 280px;
+        display: none;
+        flex-direction: column;
+        padding: 10px 0;
+        z-index: 100;
+        box-shadow: 0 10px 30px black;
+      }
+      .nav-item:hover .dropdown {
+        display: flex;
+        animation: slideUp 0.3s forwards;
+      }
+      .dropdown a {
+        padding: 12px 20px;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #888;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+      }
+      .dropdown a:hover {
+        background: var(--accent-cyan);
+        color: black;
+        padding-left: 25px;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* MOBILE MENU */
+      #mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+      }
+      #mobile-menu.open {
+        transform: translateX(0);
+      }
+
+      /* BUTTONS */
+      .btn-glitch {
+        padding: 12px 30px;
+        border: 1px solid var(--accent-cyan);
+        color: var(--accent-cyan);
+        font-family: "Syncopate";
+        font-weight: 700;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        transition: 0.3s;
+        background: transparent;
+        cursor: pointer;
+      }
+      .btn-glitch:hover {
+        background: var(--accent-cyan);
+        color: black;
+        box-shadow: 0 0 20px var(--accent-cyan);
+      }
+
+      /* STACKING SECTIONS */
+      .sticky-section {
+        position: sticky;
+        top: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+        background: #030303;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        will-change: transform;
+      }
+      .sec-protocol {
+        background: #111;
+        border-top: 1px solid #333;
+      }
+      .sec-uplink {
+        background: #000;
+        z-index: 60;
+      }
+
+      /* MARQUEE */
+      .marquee-wrapper {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        white-space: nowrap;
+      }
+      .marquee-content {
+        display: flex;
+        animation: scrollText 30s linear infinite;
+      }
+      .marquee-item {
+        font-size: clamp(3rem, 6vw, 6rem);
+        font-family: "Syncopate", sans-serif;
+        font-weight: 700;
+        color: white;
+        margin-right: 2rem;
+        opacity: 0.5;
+      }
+      @keyframes scrollText {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* SCANNER ANIMATION FOR MODAL */
+      @keyframes scan {
+        0% {
+          top: 0%;
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          top: 100%;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="fixed top-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-[9999] text-white"
+    >
+      <a
+        href="index.html"
+        class="text-2xl font-bold font-header tracking-widest cursor-pointer hover:text-[#00f3ff] transition-colors"
+        >PSNS</a
+      >
+      <div
+        class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
+      >
+        <a href="index.html" class="text-[#00f3ff]">Home</a>
+        <div class="nav-item group h-full">
+          <a
+            href="services.html"
+            class="hover:text-[#00f3ff] transition-colors py-6 block"
+            >Services</a
+          >
+          <div class="dropdown">
+            <a href="services.html">Web Development</a>
+            <a href="services.html">Mobile Apps</a>
+            <a href="services.html">Testing Services</a>
+            <a href="services.html">Health Care IT</a>
+            <a href="services.html">Content Writing</a>
+            <a href="services.html">Graphic Design</a>
+            <a href="services.html">E-Commerce</a>
+            <a href="services.html">Digital Marketing</a>
+            <a href="services.html">Non-IT Ops</a>
+            <a href="services.html">HR Services</a>
+          </div>
+        </div>
+        <a href="careers.html" class="hover:text-[#00f3ff] transition-colors"
+          >Careers</a
+        >
+        <div class="nav-item group h-full">
+          <a
+            href="about.html"
+            class="hover:text-[#bc13fe] transition-colors py-6 block"
+            >About</a
+          >
+          <div class="dropdown">
+            <a href="about.html#us">About Us</a>
+            <a href="about.html#team">Our Team</a>
+            <a href="about.html#work">How We Work</a>
+            <a href="about.html#pricing">Project Pricing</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
+        <a href="blog.html" class="hover:text-[#ccff00] transition-colors"
+          >Blog</a
+        >
+      </div>
+      <button
+        class="lg:hidden text-2xl z-50 focus:outline-none"
+        onclick="toggleMenu()"
+      >
+        ☰
+      </button>
+      <button onclick="openUplink()" class="hidden lg:block btn-glitch">
+        Get in touch
+      </button>
+    </nav>
+
+    <div
+      id="mobile-menu"
+      class="fixed inset-0 bg-black z-[9998] flex flex-col justify-center items-center gap-8 text-2xl font-header font-bold text-white"
+    >
+      <button
+        onclick="toggleMenu()"
+        class="absolute top-6 right-6 text-4xl text-[#00f3ff]"
+      >
+        &times;
+      </button>
+      <a href="index.html">Home</a><a href="services.html">Services</a>
+      <a href="careers.html">Careers</a><a href="about.html">About</a>
+      <a href="blog.html">Blog</a
+      ><a href="#" onclick="openUplink(); toggleMenu()">Contact</a>
+    </div>
+
+    <div class="card-stack">
+      <section class="sticky-section z-10 px-6">
+        <div class="max-w-6xl w-full text-center md:text-left">
+          <div
+            class="mb-6 flex items-center justify-center md:justify-start gap-4"
+          ></div>
+          <h1
+            class="text-[clamp(3.5rem,8vw,8rem)] leading-[0.9] font-header font-bold mb-6"
+          >
+            <span class="scramble-target block" data-value="BUILD TECH."
+              >BUILD TECH.</span
+            >
+            <span
+              class="scramble-target block text-gray-600"
+              data-value="HIRE GENIUS."
+              >HIRE GENIUS.</span
+            >
+          </h1>
+          <p
+            class="text-xl text-gray-400 max-w-xl border-l-2 border-[#00f3ff] pl-6 ml-auto md:ml-0 mt-8 opacity-0 reveal-fade"
+          >
+            The dual-engine interface for modern business. We architect
+            enterprise-grade software and inject elite human intelligence.
+          </p>
+        </div>
+      </section>
+
+      <section class="sticky-section z-20 bg-[#050505] min-h-[40vh]">
+        <div class="w-full text-center flex flex-col justify-center">
+          <p class="text-[#bc13fe] text-xs tracking-[4px] mb-12 font-bold">
+            TRUSTED_BY_NETWORKS
+          </p>
+          <div class="marquee-wrapper">
+            <div class="marquee-content">
+              <span class="marquee-item">GOOGLE -</span>
+              <span class="marquee-item">AMAZON -</span>
+              <span class="marquee-item">MICROSOFT -</span>
+              <span class="marquee-item">APPLE -</span>
+              <span class="marquee-item">ORACLE -</span>
+            </div>
+            <div class="marquee-content">
+              <span class="marquee-item">GOOGLE -</span>
+              <span class="marquee-item">AMAZON -</span>
+              <span class="marquee-item">MICROSOFT -</span>
+              <span class="marquee-item">APPLE -</span>
+              <span class="marquee-item">ORACLE -</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sticky-section z-30 bg-[#080808] px-6">
+        <div class="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 class="text-5xl md:text-7xl font-header mb-6">
+              ACTIVE <br /><span class="text-[#00f3ff]">MODULES.</span>
+            </h2>
+            <a
+              href="services.html"
+              class="text-[#00f3ff] border-b border-[#00f3ff] pb-1 text-sm tracking-widest hover:text-white transition-colors"
+              >ACCESS ALL 10 MODULES -></a
+            >
+          </div>
+          <div class="space-y-6">
+            <a
+              href="services.html"
+              class="block p-6 rounded-xl border border-white/10 hover:border-[#00f3ff] bg-white/5 transition-all"
+              ><div class="flex justify-between">
+                <h3 class="text-2xl font-bold">Web Development</h3>
+                <span class="text-[#00f3ff] font-header">01</span>
+              </div>
+              <p class="text-gray-400 mt-2">Scalable websites & apps.</p></a
+            >
+            <a
+              href="services.html"
+              class="block p-6 rounded-xl border border-white/10 hover:border-[#bc13fe] bg-white/5 transition-all"
+              ><div class="flex justify-between">
+                <h3 class="text-2xl font-bold">Mobile Apps</h3>
+                <span class="text-[#bc13fe] font-header">02</span>
+              </div>
+              <p class="text-gray-400 mt-2">iOS & Android Native.</p></a
+            >
+            <a
+              href="services.html"
+              class="block p-6 rounded-xl border border-white/10 hover:border-[#00f3ff] bg-white/5 transition-all"
+              ><div class="flex justify-between">
+                <h3 class="text-2xl font-bold">HR Services</h3>
+                <span class="text-[#00f3ff] font-header">10</span>
+              </div>
+              <p class="text-gray-400 mt-2">Staff Augmentation.</p></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="sticky-section z-40 sec-protocol px-6">
+        <div class="max-w-6xl w-full">
+          <h2 class="text-6xl md:text-8xl font-header mb-20 text-white">
+            PROTOCOL.
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="border-t-2 border-white/20 pt-6">
+              <span
+                class="text-5xl font-header font-bold text-[#bc13fe] mb-4 block"
+                >01</span
+              >
+              <h3 class="text-2xl font-bold mb-2 text-white">DISCOVERY</h3>
+              <p class="text-gray-400">Mapping requirements.</p>
+            </div>
+            <div class="border-t-2 border-white/20 pt-6">
+              <span
+                class="text-5xl font-header font-bold text-[#00f3ff] mb-4 block"
+                >02</span
+              >
+              <h3 class="text-2xl font-bold mb-2 text-white">SYNTHESIS</h3>
+              <p class="text-gray-400">Code execution.</p>
+            </div>
+            <div class="border-t-2 border-white/20 pt-6">
+              <span
+                class="text-5xl font-header font-bold text-[#bc13fe] mb-4 block"
+                >03</span
+              >
+              <h3 class="text-2xl font-bold mb-2 text-white">DEPLOYMENT</h3>
+              <p class="text-gray-400">Live launch.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sticky-section z-50 bg-[#0a0a0a] px-6">
+        <div class="max-w-6xl w-full">
+          <h2 class="text-5xl md:text-7xl font-header mb-16 text-center">
+            ALLOCATION.
+          </h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="p-10 border border-[#222] text-center">
+              <h3 class="font-bold mb-4 text-gray-400">MVP</h3>
+              <div class="text-5xl font-bold text-[#00f3ff] mb-4 font-header">
+                5K
+              </div>
+              <p class="text-gray-500 text-sm">Prototype Phase</p>
+            </div>
+            <div
+              class="p-10 border border-[#bc13fe] bg-[#bc13fe]/5 text-center transform md:scale-105"
+            >
+              <h3 class="font-bold mb-4 text-white">GROWTH</h3>
+              <div class="text-5xl font-bold text-[#bc13fe] mb-4 font-header">
+                15K
+              </div>
+              <p class="text-gray-400 text-sm">Full App Deployment</p>
+            </div>
+            <div class="p-10 border border-[#222] text-center">
+              <h3 class="font-bold mb-4 text-gray-400">CORP</h3>
+              <div class="text-5xl font-bold text-white mb-4 font-header">
+                CUSTOM
+              </div>
+              <p class="text-gray-500 text-sm">Enterprise Solutions</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sticky-section z-50 bg-[#0c0c0c] px-6">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-4xl md:text-6xl font-header mb-16 text-center text-[#bc13fe] opacity-80"
+          >
+            USER_LOGS
+          </h2>
+          <div class="grid md:grid-cols-2 gap-10">
+            <div class="p-8 border border-white/10 rounded-2xl">
+              <p class="text-xl text-gray-300 mb-6">
+                "PSNS deployed our platform in record time. The code structure
+                is flawless."
+              </p>
+              <div class="text-[#00f3ff] font-bold text-sm tracking-widest">
+                // CEO, MEDTECH
+              </div>
+            </div>
+            <div class="p-8 border border-white/10 rounded-2xl">
+              <p class="text-xl text-gray-300 mb-6">
+                "Recruitment protocols are highly efficient. We acquired a CTO
+                level operator."
+              </p>
+              <div class="text-[#bc13fe] font-bold text-sm tracking-widest">
+                // FOUNDER, FINTECH
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="uplink" class="sticky-section z-60 sec-uplink px-6">
+        <div class="text-center">
+          <p
+            class="text-gray-500 tracking-[8px] mb-6 text-[10px] font-bold animate-pulse"
+          >
+            READY_TO_CONNECT?
+          </p>
+          <h2
+            class="text-[clamp(3rem,7vw,6rem)] font-header font-bold mb-10 hover:text-[#00f3ff] transition-colors cursor-pointer"
+            onclick="openUplink()"
+          >
+            INITIATE <br />
+            UPLINK.
+          </h2>
+          <button onclick="openUplink()" class="btn-glitch text-xl">
+            GET IN TOUCH
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <footer
+      class="border-t border-[#222] bg-[#050505] pt-16 pb-8 relative z-70 overflow-hidden"
+    >
+      <div
+        class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent opacity-50"
+      ></div>
+
+      <div
+        class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-left"
+      >
+        <div class="md:col-span-1">
+          <a
+            href="index.html"
+            class="text-2xl font-bold font-header tracking-widest text-white hover:text-[#00f3ff] transition-colors"
+            >PSNS</a
+          >
+          <p class="text-gray-500 text-sm mt-4 leading-relaxed font-mono">
+            Bridging the gap between silicon and synapse. <br />
+            Established 2026.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-[#00f3ff] font-header text-xs tracking-widest mb-6">
+            NAVIGATION
+          </h4>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li>
+              <a href="index.html" class="hover:text-white transition-colors"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="services.html" class="hover:text-white transition-colors"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a href="careers.html" class="hover:text-white transition-colors"
+                >Careers</a
+              >
+            </li>
+            <li>
+              <a href="about.html" class="hover:text-white transition-colors"
+                >Intel (About)</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-[#bc13fe] font-header text-xs tracking-widest mb-6">
+            LEGAL
+          </h4>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li>
+              <a href="#" class="hover:text-white transition-colors"
+                >Privacy Protocol</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition-colors"
+                >Terms of Service</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition-colors"
+                >Data Policy</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-[#ccff00] font-header text-xs tracking-widest mb-6">
+            CONNECT
+          </h4>
+          <div class="flex gap-4">
+            <a
+              href="#"
+              class="w-10 h-10 border border-[#333] flex items-center justify-center text-gray-400 hover:border-[#00f3ff] hover:text-[#00f3ff] transition-all"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="w-10 h-10 border border-[#333] flex items-center justify-center text-gray-400 hover:border-[#bc13fe] hover:text-[#bc13fe] transition-all"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                />
+              </svg>
+            </a>
+          </div>
+          <a
+            href="contact.html"
+            class="inline-block mt-6 text-xs font-header border-b border-[#ccff00] text-[#ccff00] pb-1 hover:text-white hover:border-white transition-colors"
+          >
+            INITIATE UPLINK &rarr;
+          </a>
+        </div>
+      </div>
+
+      <div class="border-t border-[#111] pt-8">
+        <div
+          class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center"
+        >
+          <div class="flex items-center gap-2"></div>
+
+          <p class="text-xs text-gray-600 font-mono">
+            © 2026 PSNS SYSTEMS. ALL RIGHTS RESERVED.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <div
+      id="uplink-modal"
+      class="fixed inset-0 z-[10000] hidden items-center justify-center px-4"
+    >
+      <div
+        class="absolute inset-0 bg-black/90 backdrop-blur-sm"
+        onclick="closeUplink()"
+      ></div>
+
+      <div
+        class="relative w-full max-w-lg bg-[#050505] border border-[#00f3ff]/30 p-8 md:p-12 shadow-[0_0_50px_rgba(0,243,255,0.1)] overflow-hidden group"
+      >
+        <div
+          class="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-[#00f3ff]"
+        ></div>
+
+        <button
+          onclick="closeUplink()"
+          class="absolute top-4 right-4 text-gray-500 hover:text-[#00f3ff] transition-colors font-bold text-xl"
+        >
+          &times;
+        </button>
+
+        <form
+          id="contact-form"
+          onsubmit="submitUplink(event)"
+          class="relative z-10 space-y-6"
+        >
+          <h3 class="text-3xl font-header font-bold text-white mb-2">
+            ESTABLISH <span class="text-[#00f3ff]">CONN.</span>
+          </h3>
+          <p class="text-xs text-gray-400 tracking-widest mb-6">
+            SECURE CHANNEL OPEN //
+          </p>
+
+          <div class="space-y-4">
+            <div>
+              <input
+                type="text"
+                required
+                placeholder="OPERATOR NAME"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                required
+                placeholder="CONTACT NODE (EMAIL)"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
+              />
+            </div>
+            <div>
+              <textarea
+                rows="3"
+                required
+                placeholder="TRANSMISSION DATA"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-header font-bold py-4 hover:bg-[#00f3ff] hover:text-black transition-all duration-300 uppercase tracking-widest"
+          >
+            SEND PACKET
+          </button>
+        </form>
+
+        <div id="success-state" class="hidden relative z-10 text-center py-10">
+          <div
+            class="inline-flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#00ff41] text-[#00ff41] mb-6 shadow-[0_0_30px_rgba(0,255,65,0.3)]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-10 w-10"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="square"
+                stroke-linejoin="miter"
+                stroke-width="3"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+
+          <h3
+            class="text-2xl md:text-4xl font-header font-bold text-white mb-4 animate-pulse"
+          >
+            TRANSMISSION<br /><span class="text-[#00ff41]">RECEIVED</span>
+          </h3>
+
+          <div
+            class="text-xs text-[#00ff41] font-mono tracking-[3px] border-t border-b border-[#00ff41]/30 py-2 mb-6"
+          >
+            LOG ID: <span id="log-id">8842</span> // STATUS: ACKNOWLEDGED
+          </div>
+
+          <p class="text-gray-400 text-sm max-w-xs mx-auto mb-8">
+            Your data packet has been successfully uploaded to the PSNS
+            mainframe. Our operators will establish a downlink shortly.
+          </p>
+
+          <button
+            onclick="closeUplink()"
+            class="text-xs text-gray-500 hover:text-white tracking-widest uppercase border-b border-transparent hover:border-white transition-colors pb-1"
+          >
+            [ CLOSE TERMINAL ]
+          </button>
+        </div>
+
+        <div
+          class="absolute top-0 left-0 w-full h-1 bg-[#00f3ff]/20 shadow-[0_0_20px_#00f3ff] animate-[scan_3s_linear_infinite] pointer-events-none"
+        ></div>
+      </div>
+    </div>
+
+    <script>
+      const lenis = new Lenis({ duration: 1.2, smooth: true });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      function toggleMenu() {
+        document.getElementById("mobile-menu").classList.toggle("open");
+      }
+
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      document.querySelectorAll(".scramble-target").forEach((target) => {
+        let interval = null;
+        target.onmouseover = (event) => {
+          let iteration = 0;
+          clearInterval(interval);
+          interval = setInterval(() => {
+            event.target.innerText = event.target.innerText
+              .split("")
+              .map((letter, index) => {
+                if (index < iteration) return event.target.dataset.value[index];
+                return letters[Math.floor(Math.random() * 36)];
+              })
+              .join("");
+            if (iteration >= event.target.dataset.value.length)
+              clearInterval(interval);
+            iteration += 1 / 3;
+          }, 30);
+        };
+        target.dispatchEvent(new Event("mouseover"));
+      });
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(".reveal-fade", { opacity: 1, duration: 1, delay: 0.5 });
+
+      document.querySelectorAll(".sticky-section").forEach((sec, i) => {
+        if (i === 6) return;
+        gsap.to(sec, {
+          scrollTrigger: {
+            trigger: sec,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+          scale: 0.9,
+          opacity: 0.5,
+          filter: "blur(5px)",
+        });
+      });
+
+      // --- NEW UPLINK MODAL LOGIC ---
+
+      const modal = document.getElementById("uplink-modal");
+      const form = document.getElementById("contact-form");
+      const successState = document.getElementById("success-state");
+      const submitBtn = document.getElementById("submit-btn");
+
+      function openUplink() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        // Reset state when opening
+        form.classList.remove("hidden");
+        successState.classList.add("hidden");
+
+        // GSAP Entry Animation
+        gsap.fromTo(
+          "#uplink-modal > div:nth-child(2)",
+          { scale: 0.9, opacity: 0, filter: "blur(10px)" },
+          {
+            scale: 1,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      function closeUplink() {
+        gsap.to("#uplink-modal > div:nth-child(2)", {
+          scale: 0.9,
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+          },
+        });
+      }
+
+      function submitUplink(e) {
+        e.preventDefault();
+
+        // 1. Simulate Loading State
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = "ENCRYPTING DATA...";
+        submitBtn.classList.add("animate-pulse");
+
+        // 2. Simulate Network Delay
+        setTimeout(() => {
+          // 3. Hide Form / Show Success
+          form.classList.add("hidden");
+          successState.classList.remove("hidden");
+
+          // Generate random Log ID
+          document.getElementById("log-id").innerText =
+            Math.floor(Math.random() * 9000) + 1000;
+
+          // Reset button for next time
+          submitBtn.innerText = originalText;
+          submitBtn.classList.remove("animate-pulse");
+          form.reset();
+
+          // Success Animation
+          gsap.fromTo(
+            "#success-state > *",
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }
+          );
+        }, 1500);
+      }
+    </script>
+  </body>
+</html>
+
