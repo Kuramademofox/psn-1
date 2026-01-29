@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PSNS | Uplink</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Syncopate:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-deep: #030303;
+        --accent-cyan: #00f3ff;
+        --accent-purple: #bc13fe;
+        --accent-lime: #ccff00;
+      }
+      body {
+        background-color: var(--bg-deep);
+        color: white;
+        font-family: "Rajdhani", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+      .font-header {
+        font-family: "Syncopate", sans-serif;
+      }
+
+      /* NAVIGATION */
+      nav {
+        background: rgba(3, 3, 3, 0.95);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #0a0a0a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: 280px;
+        display: none;
+        flex-direction: column;
+        padding: 10px 0;
+        z-index: 100;
+        box-shadow: 0 10px 30px black;
+      }
+      .nav-item:hover .dropdown {
+        display: flex;
+        animation: slideUp 0.3s forwards;
+      }
+      .dropdown a {
+        padding: 12px 20px;
+        font-size: 14px;
+        color: #888;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+      }
+      .dropdown a:hover {
+        background: var(--accent-cyan);
+        color: black;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #mobile-menu {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(100%);
+      }
+      #mobile-menu.open {
+        transform: translateX(0);
+      }
+
+      /* FORM STYLES */
+      input,
+      textarea {
+        background: transparent;
+        border-bottom: 1px solid #333;
+        outline: none;
+        transition: 0.3s;
+        width: 100%;
+        padding: 15px 0;
+        font-size: 1.1rem;
+        font-family: "Rajdhani", sans-serif;
+        color: white;
+        border-radius: 0;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: var(--accent-cyan);
+        padding-left: 10px;
+      }
+      .form-box {
+        background: #0a0a0a;
+        transition: all 0.4s ease;
+      }
+      .form-box:focus-within {
+        border-color: var(--accent-cyan);
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.05);
+      }
+
+      /* SUCCESS MESSAGE ANIMATION */
+      .success-message {
+        display: none;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .scan-line {
+        width: 100%;
+        height: 2px;
+        background: var(--accent-lime);
+        box-shadow: 0 0 10px var(--accent-lime);
+        animation: scan 2s linear infinite;
+      }
+      @keyframes scan {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+    </style>
+  </head>
+  <body class="pt-24 px-6 md:px-12">
+    <nav
+      class="fixed top-0 left-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-50 text-white"
+    >
+      <a
+        href="index.html"
+        class="text-xl font-bold font-header tracking-widest cursor-pointer hover:text-[#00f3ff] transition-colors"
+        >PSNS</a
+      >
+
+      <div
+        class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
+      >
+        <a href="index.html" class="hover:text-[#00f3ff] transition-colors"
+          >Home</a
+        >
+        <div
+          class="nav-item group h-full flex items-center cursor-pointer relative"
+        >
+          <a
+            href="services.html"
+            class="hover:text-[#00f3ff] py-6 block transition-colors"
+            >Services</a
+          >
+          <div class="dropdown">
+            <a href="services.html">Web Development</a>
+            <a href="services.html">Mobile Apps</a>
+            <a href="services.html">Testing Services</a>
+            <a href="services.html">Health Care IT</a>
+            <a href="services.html">Content Writing</a>
+            <a href="services.html">Graphic Design</a>
+            <a href="services.html">E-Commerce</a>
+            <a href="services.html">Digital Marketing</a>
+            <a href="services.html">Non-IT Ops</a>
+            <a href="services.html">HR Services</a>
+          </div>
+        </div>
+        <a href="careers.html" class="hover:text-[#00f3ff] transition-colors"
+          >Careers</a
+        >
+        <div
+          class="nav-item group h-full flex items-center cursor-pointer relative"
+        >
+          <a
+            href="about.html"
+            class="hover:text-[#bc13fe] py-6 block transition-colors"
+            >About</a
+          >
+          <div class="dropdown">
+            <a href="about.html#us">About Us</a>
+            <a href="about.html#team">Our Team</a>
+            <a href="about.html#work">How We Work</a>
+            <a href="about.html#pricing">Pricing</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
+        <a href="blog.html" class="hover:text-[#ccff00] transition-colors"
+          >Blog</a
+        >
+      </div>
+
+      <button
+        class="lg:hidden text-2xl z-50 focus:outline-none"
+        onclick="toggleMenu()"
+      >
+        ☰
+      </button>
+      <a
+        href="contact.html"
+        class="hidden lg:block border border-[#00f3ff] px-6 py-2 text-[#00f3ff] font-header font-bold text-xs hover:bg-[#00f3ff] hover:text-black transition-all shadow-[0_0_10px_rgba(0,243,255,0.2)] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+        >Get in touch</a
+      >
+    </nav>
+
+    <div
+      id="mobile-menu"
+      class="fixed inset-0 bg-black z-[60] flex flex-col justify-center items-center gap-8 text-2xl font-header font-bold text-white"
+    >
+      <button
+        onclick="toggleMenu()"
+        class="absolute top-6 right-6 text-4xl text-[#00f3ff] focus:outline-none"
+      >
+        &times;
+      </button>
+      <a href="index.html" onclick="toggleMenu()" class="hover:text-[#00f3ff]"
+        >Home</a
+      >
+      <a
+        href="services.html"
+        onclick="toggleMenu()"
+        class="hover:text-[#00f3ff]"
+        >Services</a
+      >
+      <a href="careers.html" onclick="toggleMenu()" class="hover:text-[#00f3ff]"
+        >Careers</a
+      >
+      <a href="about.html" onclick="toggleMenu()" class="hover:text-[#bc13fe]"
+        >About</a
+      >
+      <a
+        href="contact.html"
+        onclick="toggleMenu()"
+        class="text-[#00f3ff] border border-[#00f3ff] px-6 py-2 text-lg"
+        >Contact</a
+      >
+    </div>
+
+    <div
+      class="flex-grow flex flex-col lg:flex-row gap-12 lg:gap-20 max-w-6xl mx-auto w-full items-start lg:items-center mt-10 md:mt-20 mb-20"
+    >
+      <div class="w-full lg:w-1/2">
+        <h1
+          class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-header font-bold mb-6 md:mb-8 leading-tight"
+        >
+          INITIATE <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-white"
+            >UPLINK.</span
+          >
+        </h1>
+        <p
+          class="text-lg md:text-xl text-gray-400 mb-8 md:mb-12 border-l-2 border-[#bc13fe] pl-4"
+        >
+          Transmit your project data. Our operators will analyze and respond
+          within 24 hours.
+        </p>
+        <div class="space-y-4 text-gray-500 font-mono text-sm tracking-wide">
+          <p class="flex items-center gap-2">
+            <span
+              class="w-2 h-2 bg-[#00f3ff] rounded-full inline-block animate-pulse"
+            ></span>
+            ACCESS@PSNS.SYS
+          </p>
+          <p>HYDERABAD NODE // SECTOR 7</p>
+        </div>
+      </div>
+
+      <div
+        class="w-full lg:w-1/2 form-box p-6 md:p-10 border border-white/10 hover:border-[#00f3ff] relative min-h-[450px] flex flex-col justify-center"
+      >
+        <div
+          class="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#00f3ff]"
+        ></div>
+
+        <form id="contactForm" class="space-y-6 md:space-y-8">
+          <div>
+            <label
+              class="block text-xs uppercase tracking-widest text-[#00f3ff] mb-2 font-bold"
+              >Identity</label
+            >
+            <input
+              type="text"
+              id="name"
+              placeholder="Name or Organization"
+              required
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs uppercase tracking-widest text-[#bc13fe] mb-2 font-bold"
+              >Freq (Email)</label
+            >
+            <input
+              type="email"
+              id="email"
+              placeholder="contact@network.com"
+              required
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs uppercase tracking-widest text-gray-400 mb-2 font-bold"
+              >Message Data</label
+            >
+            <textarea
+              id="message"
+              class="h-32 resize-none"
+              placeholder="Project specs..."
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="w-full border border-[#00f3ff] text-[#00f3ff] py-4 font-bold text-lg hover:bg-[#00f3ff] hover:text-black transition-all mt-4 font-header tracking-widest"
+          >
+            TRANSMIT
+          </button>
+        </form>
+
+        <div id="successMessage" class="success-message text-center">
+          <div class="text-[#ccff00] text-6xl mb-4 font-header">✓</div>
+          <h2 class="text-3xl font-header font-bold text-white mb-2">
+            UPLINK ESTABLISHED
+          </h2>
+          <div
+            class="w-full h-[1px] bg-[#ccff00] mb-4 overflow-hidden relative"
+          >
+            <div class="scan-line"></div>
+          </div>
+          <p class="text-gray-400 mb-8 font-mono">
+            Transmission successful. Data packet received by main server.
+            Standby for operator contact.
+          </p>
+          <button
+            onclick="resetForm()"
+            class="text-sm border border-[#ccff00] text-[#ccff00] px-6 py-2 hover:bg-[#ccff00] hover:text-black transition-all"
+          >
+            TRANSMIT NEW PACKET
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("mobile-menu").classList.toggle("open");
+      }
+
+      // HANDLE FORM SUCCESS
+      const form = document.getElementById("contactForm");
+      const successMsg = document.getElementById("successMessage");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // Stop actual page reload
+
+        // 1. Fade out form
+        form.style.opacity = "0";
+
+        // 2. Wait for fade out, then hide form and show success
+        setTimeout(() => {
+          form.style.display = "none";
+          successMsg.style.display = "block";
+          // Force success msg opacity back to 1 if needed
+          successMsg.style.opacity = "1";
+        }, 400); // 400ms matches the CSS transition time
+      });
+
+      function resetForm() {
+        // Reset fields
+        form.reset();
+
+        // Hide success
+        successMsg.style.display = "none";
+
+        // Show form
+        form.style.display = "block";
+
+        // Small delay to allow display block to render before changing opacity for smooth fade in
+        setTimeout(() => {
+          form.style.opacity = "1";
+        }, 50);
+      }
+    </script>
+  </body>
+</html>
