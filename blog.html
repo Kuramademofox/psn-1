@@ -34,152 +34,42 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         transition: 0.3s;
       }
-      .nav-item {
-        position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
+      .nav-item { position: relative; height: 100%; display: flex; align-items: center; }
       .dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #0a0a0a;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        min-width: 280px;
-        display: none;
-        flex-direction: column;
-        padding: 10px 0;
-        z-index: 100;
-        box-shadow: 0 10px 30px black;
+        position: absolute; top: 100%; left: 0; background: #0a0a0a; border: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: 280px; display: none; flex-direction: column; padding: 10px 0; z-index: 100; box-shadow: 0 10px 30px black;
       }
-      .nav-item:hover .dropdown {
-        display: flex;
-        animation: slideUp 0.3s forwards;
-      }
-      .dropdown a {
-        padding: 12px 20px;
-        font-size: 11px;
-        text-transform: uppercase;
-        color: #888;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        transition: 0.2s;
-      }
-      .dropdown a:hover {
-        background: var(--accent-cyan);
-        color: black;
-        padding-left: 25px;
-      }
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      #mobile-menu {
-        transform: translateX(100%);
-        transition: transform 0.4s ease-in-out;
-      }
-      #mobile-menu.open {
-        transform: translateX(0);
-      }
-      .btn-glitch {
-        padding: 12px 30px;
-        border: 1px solid var(--accent-cyan);
-        color: var(--accent-cyan);
-        font-family: "Syncopate";
-        font-weight: 700;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        transition: 0.3s;
-        background: transparent;
-      }
-      .btn-glitch:hover {
-        background: var(--accent-cyan);
-        color: black;
-        box-shadow: 0 0 20px var(--accent-cyan);
-      }
+      .nav-item:hover .dropdown { display: flex; animation: slideUp 0.3s forwards; }
+      .dropdown a { padding: 12px 20px; font-size: 11px; text-transform: uppercase; color: #888; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.2s; }
+      .dropdown a:hover { background: var(--accent-cyan); color: black; padding-left: 25px; }
+      @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      #mobile-menu { transform: translateX(100%); transition: transform 0.4s ease-in-out; }
+      #mobile-menu.open { transform: translateX(0); }
+      .btn-glitch { padding: 12px 30px; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: "Syncopate"; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; transition: 0.3s; background: transparent; }
+      .btn-glitch:hover { background: var(--accent-cyan); color: black; box-shadow: 0 0 20px var(--accent-cyan); }
 
       /* BLOG CARDS */
-      .blog-card {
-        background: #0a0a0a;
-        border: 1px solid #222;
-        overflow: hidden;
-        transition: all 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-      .blog-card:hover {
-        border-color: var(--accent-cyan);
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      }
-      .card-image-wrap {
-        height: 240px;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-        background: #000;
-        border-bottom: 1px solid #222;
-        transition: border-color 0.3s;
-      }
-      .card-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.8;
-        filter: grayscale(100%) contrast(1.1);
-        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-      .blog-card:hover .card-image {
-        opacity: 1;
-        filter: grayscale(0%) contrast(1);
-        transform: scale(1.05);
-      }
-      .blog-card:hover .card-image-wrap {
-        border-bottom-color: var(--accent-cyan);
-      }
-      .tag {
-        font-size: 10px;
-        text-transform: uppercase;
-        border: 1px solid #333;
-        padding: 4px 10px;
-        color: #888;
-        letter-spacing: 1px;
-        transition: 0.3s;
-      }
-      .blog-card:hover .tag {
-        border-color: white;
-        color: white;
-      }
+      .blog-card { background: #0a0a0a; border: 1px solid #222; overflow: hidden; transition: all 0.4s ease; display: none; flex-direction: column; height: 100%; }
+      .blog-card.active { display: flex; animation: fadeIn 0.5s ease forwards; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      .blog-card:hover { border-color: var(--accent-cyan); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+      .card-image-wrap { height: 240px; width: 100%; position: relative; overflow: hidden; background: #000; border-bottom: 1px solid #222; transition: border-color 0.3s; }
+      .card-image { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: grayscale(100%) contrast(1.1); transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+      .blog-card:hover .card-image { opacity: 1; filter: grayscale(0%) contrast(1); transform: scale(1.05); }
+      .blog-card:hover .card-image-wrap { border-bottom-color: var(--accent-cyan); }
+      .tag { font-size: 10px; text-transform: uppercase; border: 1px solid #333; padding: 4px 10px; color: #888; letter-spacing: 1px; transition: 0.3s; }
+      .blog-card:hover .tag { border-color: white; color: white; }
 
       /* TERMINAL SEARCH */
-      .terminal-search {
-        background: transparent;
-        border: 1px solid #333;
-        font-family: "Space Grotesk", monospace;
-        padding: 15px 20px;
-        color: var(--accent-cyan);
-        width: 100%;
-        transition: 0.3s;
-      }
-      .terminal-search:focus {
-        outline: none;
-        border-color: var(--accent-cyan);
-        background: rgba(0, 243, 255, 0.05);
-      }
-      .search-icon {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #555;
-      }
+      .terminal-search { background: transparent; border: 1px solid #333; font-family: "Space Grotesk", monospace; padding: 15px 20px; color: var(--accent-cyan); width: 100%; transition: 0.3s; }
+      .terminal-search:focus { outline: none; border-color: var(--accent-cyan); background: rgba(0, 243, 255, 0.05); }
+      .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #555; }
+
+      /* PAGINATION BUTTONS */
+      .page-btn { px-4 py-2 border border-[#333] text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed }
+      .page-btn.active { background-color: var(--accent-cyan); color: black; font-weight: bold; border-color: var(--accent-cyan); }
+      .page-btn:not(.active):not(:disabled):hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
     </style>
   </head>
   <body class="pt-24 px-6 md:px-12">
@@ -191,14 +81,12 @@
         class="text-2xl font-bold font-header tracking-widest cursor-pointer hover:text-[#00f3ff] transition-colors"
         >NOVO</a
       >
-
       <div
         class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
       >
         <a href="index.html" class="hover:text-[#00f3ff] transition-colors"
           >Home</a
         >
-
         <div class="nav-item group h-full">
           <a
             href="services.html"
@@ -208,39 +96,16 @@
           <div class="dropdown">
             <a href="services.html">Web Development</a>
             <a href="services.html">Mobile Apps</a>
-            <a href="services.html">Testing Services</a>
-            <a href="services.html">Health Care IT</a>
-            <a href="services.html">Content Writing</a>
-            <a href="services.html">Graphic Design</a>
-            <a href="services.html">E-Commerce</a>
-            <a href="services.html">Digital Marketing</a>
-            <a href="services.html">Non-IT Ops</a>
-            <a href="services.html">HR Services</a>
           </div>
         </div>
-
         <a href="careers.html" class="hover:text-[#00f3ff] transition-colors"
           >Careers</a
         >
-
-        <div class="nav-item group h-full">
-          <a
-            href="about.html"
-            class="hover:text-[#bc13fe] transition-colors py-6 block"
-            >About</a
-          >
-          <div class="dropdown">
-            <a href="about.html#us">About Us</a>
-            <a href="about.html#team">Our Team</a>
-            <a href="about.html#work">How We Work</a>
-            <a href="about.html#pricing">Project Pricing</a>
-            <a href="contact.html">Contact Us</a>
-          </div>
-        </div>
-
+        <a href="about.html" class="hover:text-[#bc13fe] transition-colors"
+          >About</a
+        >
         <a href="blog.html" class="text-[#ccff00] transition-colors">Blog</a>
       </div>
-
       <button
         class="lg:hidden text-2xl z-50 focus:outline-none"
         onclick="toggleMenu()"
@@ -260,28 +125,11 @@
       >
         &times;
       </button>
-      <a href="index.html" onclick="toggleMenu()" class="hover:text-[#00f3ff]"
-        >Home</a
-      >
-      <a
-        href="services.html"
-        onclick="toggleMenu()"
-        class="hover:text-[#00f3ff]"
-        >Services</a
-      >
-      <a href="careers.html" onclick="toggleMenu()" class="hover:text-[#00f3ff]"
-        >Careers</a
-      >
-      <a href="about.html" onclick="toggleMenu()" class="hover:text-[#bc13fe]"
-        >About</a
-      >
-      <a href="blog.html" onclick="toggleMenu()" class="text-[#ccff00]">Blog</a>
-      <a
-        href="contact.html"
-        onclick="toggleMenu()"
-        class="text-[#00f3ff] border border-[#00f3ff] px-6 py-2 text-lg"
-        >Get In Touch</a
-      >
+      <a href="index.html" class="hover:text-[#00f3ff]">Home</a>
+      <a href="services.html" class="hover:text-[#00f3ff]">Services</a>
+      <a href="careers.html" class="hover:text-[#00f3ff]">Careers</a>
+      <a href="about.html" class="hover:text-[#bc13fe]">About</a>
+      <a href="blog.html" class="text-[#ccff00]">Blog</a>
     </div>
 
     <section class="max-w-4xl mb-24 mt-10">
@@ -303,6 +151,7 @@
       <div class="relative w-full md:w-2/3">
         <input
           type="text"
+          id="searchInput"
           placeholder="> QUERY DATABASE..."
           class="terminal-search text-base md:text-lg"
         />
@@ -311,26 +160,30 @@
       <div class="w-full md:w-1/3 flex gap-2">
         <button
           class="flex-1 border border-[#333] hover:border-[#ccff00] hover:text-[#ccff00] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
+          onclick="filterLogs('all')"
         >
-          LATEST
+          ALL
         </button>
         <button
           class="flex-1 border border-[#333] hover:border-[#00f3ff] hover:text-[#00f3ff] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
+          onclick="filterLogs('TECH')"
         >
           TECH
         </button>
         <button
           class="flex-1 border border-[#333] hover:border-[#bc13fe] hover:text-[#bc13fe] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
+          onclick="filterLogs('CULTURE')"
         >
-          INSIGHTS
+          CULTURE
         </button>
       </div>
     </div>
 
     <div
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-24"
+      id="blog-grid"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12"
     >
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="TECH">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop"
@@ -340,8 +193,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-[#00f3ff] text-[#00f3ff]">CYBERSEC</span>
-            <span class="tag">LOG #0452</span>
+            <span class="tag border-[#00f3ff] text-[#00f3ff]">CYBERSEC</span
+            ><span class="tag">LOG #0452</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-[#00f3ff] transition-colors"
@@ -353,14 +206,14 @@
             trust-no-one protocol.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-[#00f3ff] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
 
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="TECH">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop"
@@ -370,8 +223,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-[#bc13fe] text-[#bc13fe]">AI / ML</span>
-            <span class="tag">LOG #0451</span>
+            <span class="tag border-[#bc13fe] text-[#bc13fe]">AI / ML</span
+            ><span class="tag">LOG #0451</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-[#bc13fe] transition-colors"
@@ -383,14 +236,14 @@
             2026.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-[#bc13fe] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
 
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="TECH">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop"
@@ -400,8 +253,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-[#ccff00] text-[#ccff00]">DESIGN</span>
-            <span class="tag">LOG #0450</span>
+            <span class="tag border-[#ccff00] text-[#ccff00]">DESIGN</span
+            ><span class="tag">LOG #0450</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-[#ccff00] transition-colors"
@@ -413,14 +266,14 @@
             contrast.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-[#ccff00] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
 
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="TECH">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop"
@@ -430,8 +283,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-white text-white">DEV</span>
-            <span class="tag">LOG #0449</span>
+            <span class="tag border-white text-white">DEV</span
+            ><span class="tag">LOG #0449</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-white transition-colors"
@@ -442,14 +295,14 @@
             Optimizing data loads for high-traffic enterprise applications.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-white font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
 
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="TECH">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop"
@@ -459,8 +312,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-[#00f3ff] text-[#00f3ff]">HARDWARE</span>
-            <span class="tag">LOG #0448</span>
+            <span class="tag border-[#00f3ff] text-[#00f3ff]">HARDWARE</span
+            ><span class="tag">LOG #0448</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-[#00f3ff] transition-colors"
@@ -471,14 +324,14 @@
             Preparing existing infrastructure for the post-silicon era.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-[#00f3ff] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
 
-      <article class="blog-card group">
+      <article class="blog-card group" data-category="CULTURE">
         <div class="card-image-wrap">
           <img
             src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1000&auto=format&fit=crop"
@@ -488,8 +341,8 @@
         </div>
         <div class="p-8 flex flex-col flex-grow">
           <div class="flex gap-2 mb-4">
-            <span class="tag border-[#bc13fe] text-[#bc13fe]">CULTURE</span>
-            <span class="tag">LOG #0447</span>
+            <span class="tag border-[#bc13fe] text-[#bc13fe]">CULTURE</span
+            ><span class="tag">LOG #0447</span>
           </div>
           <h3
             class="text-2xl font-bold mb-4 group-hover:text-[#bc13fe] transition-colors"
@@ -500,161 +353,168 @@
             How NOVO maintains team cohesion across 12 different time zones.
           </p>
           <a
-            href="#"
+            href="post.html"
             class="text-[#bc13fe] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
+            >READ LOG <span>&rarr;</span></a
+          >
+        </div>
+      </article>
+
+      <article class="blog-card group" data-category="CULTURE">
+        <div class="card-image-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop"
+            alt="Meeting"
+            class="card-image"
+          />
+        </div>
+        <div class="p-8 flex flex-col flex-grow">
+          <div class="flex gap-2 mb-4">
+            <span class="tag border-[#ccff00] text-[#ccff00]">TEAM</span
+            ><span class="tag">LOG #0446</span>
+          </div>
+          <h3
+            class="text-2xl font-bold mb-4 group-hover:text-[#ccff00] transition-colors"
+          >
+            Agile Done Right
+          </h3>
+          <p class="text-gray-400 text-sm mb-6 flex-grow">
+            Why daily standups might be killing your engineering team's
+            productivity.
+          </p>
+          <a
+            href="post.html"
+            class="text-[#ccff00] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
             >READ LOG <span>&rarr;</span></a
           >
         </div>
       </article>
     </div>
 
-    <div class="flex justify-center gap-4 mb-20 font-header text-xs md:text-sm">
-      <button
-        class="px-4 py-2 border border-[#333] text-gray-500 hover:border-white hover:text-white transition-colors"
-      >
-        &lt; PREV
-      </button>
-      <button class="px-4 py-2 bg-[#00f3ff] text-black font-bold">1</button>
-      <button
-        class="px-4 py-2 border border-[#333] text-white hover:border-[#00f3ff] transition-colors"
-      >
-        2
-      </button>
-      <button
-        class="px-4 py-2 border border-[#333] text-white hover:border-[#00f3ff] transition-colors"
-      >
-        3
-      </button>
-      <button
-        class="px-4 py-2 border border-[#333] text-white hover:border-white transition-colors"
-      >
-        NEXT &gt;
-      </button>
-    </div>
+    <div
+      class="flex justify-center gap-2 md:gap-4 mb-20 font-header text-xs md:text-sm"
+      id="pagination-controls"
+    ></div>
+
     <footer
       class="border-t border-[#222] bg-[#050505] pt-16 pb-8 relative z-70 overflow-hidden"
     >
-      <div
-        class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00f3ff] to-transparent opacity-50"
-      ></div>
-
-      <div
-        class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-left"
-      >
-        <div class="md:col-span-1">
-          <a
-            href="index.html"
-            class="text-2xl font-bold font-header tracking-widest text-white hover:text-[#00f3ff] transition-colors"
-            >NOVO</a
-          >
-          <p class="text-gray-500 text-sm mt-4 leading-relaxed font-mono">
-            Bridging the gap between silicon and synapse. <br />
-            Established 2026.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="text-[#00f3ff] font-header text-xs tracking-widest mb-6">
-            NAVIGATION
-          </h4>
-          <ul class="space-y-3 text-sm text-gray-400">
-            <li>
-              <a href="index.html" class="hover:text-white transition-colors"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="services.html" class="hover:text-white transition-colors"
-                >Services</a
-              >
-            </li>
-            <li>
-              <a href="careers.html" class="hover:text-white transition-colors"
-                >Careers</a
-              >
-            </li>
-            <li>
-              <a href="about.html" class="hover:text-white transition-colors"
-                >Intel (About)</a
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="text-[#bc13fe] font-header text-xs tracking-widest mb-6">
-            LEGAL
-          </h4>
-          <ul class="space-y-3 text-sm text-gray-400">
-            <li>
-              <a href="#" class="hover:text-white transition-colors"
-                >Privacy Protocol</a
-              >
-            </li>
-            <li>
-              <a href="#" class="hover:text-white transition-colors"
-                >Terms of Service</a
-              >
-            </li>
-            <li>
-              <a href="#" class="hover:text-white transition-colors"
-                >Data Policy</a
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="text-[#ccff00] font-header text-xs tracking-widest mb-6">
-            CONNECT
-          </h4>
-          <div class="flex gap-4">
-            <a
-              href="#"
-              class="w-10 h-10 border border-[#333] flex items-center justify-center text-gray-400 hover:border-[#00f3ff] hover:text-[#00f3ff] transition-all"
-            >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                />
-              </svg>
-            </a>
-            <a
-              href="#"
-              class="w-10 h-10 border border-[#333] flex items-center justify-center text-gray-400 hover:border-[#bc13fe] hover:text-[#bc13fe] transition-all"
-            >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-                />
-              </svg>
-            </a>
-          </div>
-          <a
-            href="contact.html"
-            class="inline-block mt-6 text-xs font-header border-b border-[#ccff00] text-[#ccff00] pb-1 hover:text-white hover:border-white transition-colors"
-          >
-            INITIATE UPLINK &rarr;
-          </a>
-        </div>
-      </div>
-
-      <div class="border-t border-[#111] pt-8">
+      <div class="border-t border-[#111] pt-8 mt-12">
         <div
           class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center"
         >
-          <div class="flex items-center gap-2"></div>
-
           <p class="text-xs text-gray-600 font-mono">
             © 2026 NOVO SYSTEMS. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>
     </footer>
+
     <script>
+      // 1. Mobile Menu Toggle
       function toggleMenu() {
         document.getElementById("mobile-menu").classList.toggle("open");
       }
+
+      // 2. Pagination & Filtering Logic
+      const articlesPerPage = 3; // Change this number to show more/less articles per page
+      let currentPage = 1;
+      let currentCategory = "all";
+      let searchQuery = "";
+
+      // Get all article DOM elements
+      const allArticles = Array.from(document.querySelectorAll(".blog-card"));
+
+      function renderPagination() {
+        // Step 1: Filter the articles based on Category AND Search Query
+        const filteredArticles = allArticles.filter((article) => {
+          const title = article.querySelector("h3").innerText.toLowerCase();
+          const category = article.getAttribute("data-category");
+
+          const matchesSearch = title.includes(searchQuery.toLowerCase());
+          const matchesCategory =
+            currentCategory === "all" || category === currentCategory;
+
+          return matchesSearch && matchesCategory;
+        });
+
+        const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+
+        // Hide all articles first
+        allArticles.forEach((article) => article.classList.remove("active"));
+
+        // Step 2: Calculate which items to show on the current page
+        const startIndex = (currentPage - 1) * articlesPerPage;
+        const endIndex = startIndex + articlesPerPage;
+
+        // Show only the items for the current page
+        filteredArticles.slice(startIndex, endIndex).forEach((article) => {
+          article.classList.add("active");
+        });
+
+        // Step 3: Build the Pagination Buttons HTML
+        const controlsContainer = document.getElementById(
+          "pagination-controls"
+        );
+        controlsContainer.innerHTML = ""; // Clear existing buttons
+
+        if (totalPages <= 1) return; // Hide pagination if only 1 page exists
+
+        // Create PREV button
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "page-btn px-4 py-2 border border-[#333]";
+        prevBtn.innerText = "< PREV";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+          currentPage--;
+          renderPagination();
+        };
+        controlsContainer.appendChild(prevBtn);
+
+        // Create Number buttons
+        for (let i = 1; i <= totalPages; i++) {
+          const numBtn = document.createElement("button");
+          numBtn.className = `page-btn px-4 py-2 border border-[#333] ${
+            i === currentPage ? "active" : ""
+          }`;
+          numBtn.innerText = i;
+          numBtn.onclick = () => {
+            currentPage = i;
+            renderPagination();
+          };
+          controlsContainer.appendChild(numBtn);
+        }
+
+        // Create NEXT button
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "page-btn px-4 py-2 border border-[#333]";
+        nextBtn.innerText = "NEXT >";
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+          currentPage++;
+          renderPagination();
+        };
+        controlsContainer.appendChild(nextBtn);
+      }
+
+      // Filter Category Function (triggered by HTML buttons)
+      function filterLogs(category) {
+        currentCategory = category;
+        currentPage = 1; // Reset to page 1 when filter changes
+        renderPagination();
+      }
+
+      // Search Bar Event Listener
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        currentPage = 1; // Reset to page 1 when typing
+        renderPagination();
+      });
+
+      // Initialize the page on first load
+      document.addEventListener("DOMContentLoaded", () => {
+        renderPagination();
+      });
     </script>
   </body>
 </html>
