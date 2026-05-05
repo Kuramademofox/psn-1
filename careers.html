@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <title>Syntelo | Careers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
@@ -15,8 +18,12 @@
         --accent-cyan: #00f3ff;
         --accent-purple: #bc13fe;
         --accent-lime: #ccff00;
+        --accent-green: #00ff41;
         --glass: rgba(20, 20, 20, 0.6);
         --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      html {
+        scroll-behavior: auto;
       }
       body {
         background-color: var(--bg-deep);
@@ -34,7 +41,7 @@
         text-transform: uppercase;
       }
 
-      /* --- NAVIGATION (Kept Consistent) --- */
+      /* --- NAVIGATION --- */
       nav {
         background: rgba(3, 3, 3, 0.9);
         backdrop-filter: blur(15px);
@@ -94,6 +101,8 @@
       #mobile-menu.open {
         transform: translateX(0);
       }
+
+      /* BUTTONS */
       .btn-glitch {
         padding: 12px 30px;
         border: 1px solid var(--accent-cyan);
@@ -111,7 +120,7 @@
         box-shadow: 0 0 20px var(--accent-cyan);
       }
 
-      /* --- NEW JOB CARD STYLES --- */
+      /* --- JOB CARD STYLES --- */
       .job-card {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -133,7 +142,6 @@
         }
       }
 
-      /* Hover Effects */
       .job-card:hover {
         background: rgba(20, 20, 20, 0.9);
         transform: translateX(10px);
@@ -142,7 +150,6 @@
           0 10px 30px rgba(0, 0, 0, 0.5);
       }
 
-      /* Badge Styling */
       .badge {
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -155,7 +162,6 @@
         font-weight: 600;
       }
 
-      /* Apply Button Customization */
       .btn-apply {
         border: 1px solid white;
         padding: 10px 24px;
@@ -166,6 +172,9 @@
         transition: 0.3s;
         position: relative;
         z-index: 10;
+        background: transparent;
+        color: white;
+        cursor: pointer;
       }
 
       .job-card:hover .btn-apply {
@@ -175,7 +184,26 @@
         box-shadow: 0 0 15px var(--highlight-color);
       }
 
-      /* Decorative Background Blur */
+      /* FILTERS */
+      .filter-btn {
+        color: #888;
+        font-family: "Syncopate";
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding-bottom: 4px;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+      .filter-btn:hover {
+        color: white;
+      }
+      .filter-btn.active {
+        color: var(--accent-cyan);
+        border-bottom-color: var(--accent-cyan);
+      }
+
       .blur-orb {
         position: fixed;
         width: 600px;
@@ -191,7 +219,6 @@
         pointer-events: none;
       }
 
-      /* Header Animation */
       @keyframes floatText {
         0% {
           transform: translateY(0px);
@@ -203,8 +230,9 @@
           transform: translateY(0px);
         }
       }
-      .anim-header {
+      .anim-header-float {
         animation: floatText 6s ease-in-out infinite;
+        display: inline-block;
       }
     </style>
   </head>
@@ -212,22 +240,17 @@
     <div class="blur-orb"></div>
 
     <nav
+      id="main-nav"
       class="fixed top-0 left-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-[100] text-white"
     >
-      <a
-        href="index.html"
-        class="flex items-center gap-3 text-2xl font-bold font-header tracking-widest cursor-pointer transition-colors group"
-      >
+      <!-- UPDATED HEADER LOGO -->
+      <a href="index.html" class="flex items-center cursor-pointer group">
         <img
-          src="Logo.jpeg"
-          alt="Syntelo Logo"
-          class="h-10 w-10 rounded-full object-cover border border-white/20 group-hover:border-[#00f3ff] group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all duration-300"
+          src="images/logo.jpeg"
+          alt="Company Logo"
+          class="h-12 w-auto object-contain drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.6)] transition-all duration-300"
         />
-        <span class="group-hover:text-[#00f3ff] transition-colors"
-          >SYNTELO</span
-        >
       </a>
-
       <div
         class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
       >
@@ -242,15 +265,15 @@
           >
           <div class="dropdown">
             <a href="services.html">Web Development</a>
-            <a href="services.html">Mobile Apps</a>
-            <a href="services.html">Testing Services</a>
-            <a href="services.html">Health Care IT</a>
-            <a href="services.html">Content Writing</a>
-            <a href="services.html">Graphic Design</a>
-            <a href="services.html">E-Commerce</a>
+            <a href="services.html">Mobile App Development</a>
+            <a href="services.html">Software Testing & QA</a>
+            <a href="services.html">Healthcare IT Solutions</a>
+            <a href="services.html">Content & Copywriting</a>
+            <a href="services.html">UI/UX & Visual Design</a>
+            <a href="services.html">E-Commerce Development</a>
             <a href="services.html">Digital Marketing</a>
-            <a href="services.html">Non-IT Ops</a>
-            <a href="services.html">HR Services</a>
+            <a href="services.html">Business Consulting</a>
+            <a href="services.html">Staff Augmentation</a>
           </div>
         </div>
         <a href="careers.html" class="text-[#00f3ff] transition-colors"
@@ -281,7 +304,9 @@
       >
         ☰
       </button>
-      <a href="contact.html" class="hidden lg:block btn-glitch">Get in touch</a>
+      <button onclick="openUplink()" class="hidden lg:block btn-glitch">
+        Get in touch
+      </button>
     </nav>
 
     <div
@@ -290,7 +315,7 @@
     >
       <button
         onclick="toggleMenu()"
-        class="absolute top-6 right-6 text-4xl text-[#00f3ff]"
+        class="absolute top-6 right-6 text-4xl text-[#00f3ff] focus:outline-none"
       >
         &times;
       </button>
@@ -312,125 +337,60 @@
       <a href="blog.html" onclick="toggleMenu()" class="hover:text-[#ccff00]"
         >Blog</a
       >
-      <a
-        href="contact.html"
-        onclick="toggleMenu()"
-        class="text-[#00f3ff] border border-[#00f3ff] px-6 py-2 text-lg"
-        >Get In Touch</a
+      <button
+        onclick="openUplink(); toggleMenu()"
+        class="text-[#00f3ff] border border-[#00f3ff] px-6 py-2 text-lg font-header mt-4 uppercase"
       >
+        Get In Touch
+      </button>
     </div>
 
     <header class="max-w-4xl mb-20 mt-10">
-      <h1 class="text-6xl md:text-8xl font-header font-bold mb-8 anim-header">
-        JOIN <br />
-        <span
-          class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-white"
-          >NETWORK.</span
-        >
+      <h1
+        class="text-6xl md:text-8xl font-header font-bold mb-8 hero-anim opacity-0"
+      >
+        <div class="anim-header-float">
+          JOIN <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-white"
+            >NETWORK.</span
+          >
+        </div>
       </h1>
-      <p class="text-gray-400 text-lg max-w-xl leading-relaxed">
+      <p
+        class="text-gray-400 text-lg max-w-xl leading-relaxed hero-anim opacity-0"
+      >
         We are looking for visionaries, coders, and designers to build the
         digital infrastructure of tomorrow.
       </p>
     </header>
 
     <div
-      class="max-w-5xl mb-6 flex justify-between items-end border-b border-gray-800 pb-2"
+      class="max-w-5xl mb-6 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-4 gap-6 hero-anim opacity-0"
     >
-      <span class="text-xs font-mono text-gray-500 uppercase tracking-widest"
-        >// CURRENT_OPENINGS</span
-      >
+      <div class="flex gap-6 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
+        <button class="filter-btn active" onclick="filterJobs('all', this)">
+          All
+        </button>
+        <button class="filter-btn" onclick="filterJobs('engineering', this)">
+          Engineering
+        </button>
+        <button class="filter-btn" onclick="filterJobs('design', this)">
+          Design
+        </button>
+        <button class="filter-btn" onclick="filterJobs('security', this)">
+          Security
+        </button>
+      </div>
+
       <span
-        class="text-xs font-mono text-[#00f3ff] uppercase tracking-widest animate-pulse"
+        class="text-xs font-mono text-[#00f3ff] uppercase tracking-widest animate-pulse whitespace-nowrap"
         >● SYSTEM_ONLINE</span
       >
     </div>
 
-    <div class="flex flex-col gap-6 max-w-5xl mb-24">
-      <div class="job-card group" style="--highlight-color: #00f3ff">
-        <div class="flex flex-col gap-2">
-          <h3
-            class="text-2xl md:text-3xl font-bold group-hover:text-[#00f3ff] transition-colors"
-          >
-            REACT OPERATOR
-          </h3>
-          <div class="flex gap-3 flex-wrap">
-            <span class="badge">Engineering</span>
-            <span class="badge">Remote</span>
-            <span class="badge">Senior</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-6 mt-4 md:mt-0">
-          <span class="text-xs text-gray-500 hidden md:block"
-            >POSTED 2D AGO</span
-          >
-          <a href="contact.html" class="btn-apply">Initialize &rarr;</a>
-        </div>
-      </div>
+    <div class="flex flex-col gap-6 max-w-5xl mb-24" id="job-container"></div>
 
-      <div class="job-card group" style="--highlight-color: #bc13fe">
-        <div class="flex flex-col gap-2">
-          <h3
-            class="text-2xl md:text-3xl font-bold group-hover:text-[#bc13fe] transition-colors"
-          >
-            CYBER ANALYST
-          </h3>
-          <div class="flex gap-3 flex-wrap">
-            <span class="badge">Security</span>
-            <span class="badge">Hybrid</span>
-            <span class="badge">Level 4</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-6 mt-4 md:mt-0">
-          <span class="text-xs text-gray-500 hidden md:block"
-            >POSTED 5D AGO</span
-          >
-          <a href="contact.html" class="btn-apply">Initialize &rarr;</a>
-        </div>
-      </div>
-
-      <div class="job-card group" style="--highlight-color: #ccff00">
-        <div class="flex flex-col gap-2">
-          <h3
-            class="text-2xl md:text-3xl font-bold group-hover:text-[#ccff00] transition-colors"
-          >
-            UX ARCHITECT
-          </h3>
-          <div class="flex gap-3 flex-wrap">
-            <span class="badge">Design</span>
-            <span class="badge">On-Site</span>
-            <span class="badge">Junior</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-6 mt-4 md:mt-0">
-          <span class="text-xs text-gray-500 hidden md:block"
-            >POSTED 1W AGO</span
-          >
-          <a href="contact.html" class="btn-apply">Initialize &rarr;</a>
-        </div>
-      </div>
-
-      <div class="job-card group" style="--highlight-color: #00f3ff">
-        <div class="flex flex-col gap-2">
-          <h3
-            class="text-2xl md:text-3xl font-bold group-hover:text-[#00f3ff] transition-colors"
-          >
-            BACKEND ENGINEER
-          </h3>
-          <div class="flex gap-3 flex-wrap">
-            <span class="badge">Engineering</span>
-            <span class="badge">Remote</span>
-            <span class="badge">Mid-Level</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-6 mt-4 md:mt-0">
-          <span class="text-xs text-gray-500 hidden md:block"
-            >POSTED 1W AGO</span
-          >
-          <a href="contact.html" class="btn-apply">Initialize &rarr;</a>
-        </div>
-      </div>
-    </div>
     <footer
       class="border-t border-[#222] bg-[#050505] pt-16 pb-8 relative z-70 overflow-hidden"
     >
@@ -441,19 +401,17 @@
       <div
         class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-left"
       >
-        <div class="md:col-span-1">
+        <div class="md:col-span-1 footer-col">
+          <!-- UPDATED FOOTER LOGO -->
           <a
             href="index.html"
-            class="flex items-center gap-3 text-2xl font-bold font-header tracking-widest cursor-pointer transition-colors group"
+            class="flex items-center cursor-pointer group mb-4"
           >
             <img
-              src="Logo.jpeg"
-              alt="Syntelo Logo"
-              class="h-10 w-10 rounded-full object-cover border border-white/20 group-hover:border-[#00f3ff] group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all duration-300"
+              src="images/logo.jpeg"
+              alt="Company Logo"
+              class="h-12 w-auto object-contain drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.6)] transition-all duration-300"
             />
-            <span class="group-hover:text-[#00f3ff] transition-colors"
-              >SYNTELO</span
-            >
           </a>
           <p class="text-gray-500 text-sm mt-4 leading-relaxed font-mono">
             Bridging the gap between silicon and synapse. <br />
@@ -461,7 +419,7 @@
           </p>
         </div>
 
-        <div>
+        <div class="footer-col">
           <h4 class="text-[#00f3ff] font-header text-xs tracking-widest mb-6">
             NAVIGATION
           </h4>
@@ -489,7 +447,7 @@
           </ul>
         </div>
 
-        <div>
+        <div class="footer-col">
           <h4 class="text-[#bc13fe] font-header text-xs tracking-widest mb-6">
             LEGAL
           </h4>
@@ -512,7 +470,7 @@
           </ul>
         </div>
 
-        <div>
+        <div class="footer-col">
           <h4 class="text-[#ccff00] font-header text-xs tracking-widest mb-6">
             CONNECT
           </h4>
@@ -538,30 +496,466 @@
               </svg>
             </a>
           </div>
-          <a
-            href="contact.html"
+          <button
+            onclick="openUplink()"
             class="inline-block mt-6 text-xs font-header border-b border-[#ccff00] text-[#ccff00] pb-1 hover:text-white hover:border-white transition-colors"
           >
             INITIATE UPLINK &rarr;
-          </a>
+          </button>
         </div>
       </div>
 
       <div class="border-t border-[#111] pt-8">
         <div
-          class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center"
+          class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center footer-copyright opacity-0"
         >
           <div class="flex items-center gap-2"></div>
-
           <p class="text-xs text-gray-600 font-mono">
             © 2026 Syntelo SYSTEMS. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>
     </footer>
+
+    <div
+      id="uplink-modal"
+      class="fixed inset-0 z-[10000] hidden items-center justify-center px-4"
+    >
+      <div
+        class="absolute inset-0 bg-black/90 backdrop-blur-sm"
+        onclick="closeUplink()"
+      ></div>
+
+      <div
+        class="relative w-full max-w-lg bg-[#050505] border border-[#00f3ff]/30 p-8 md:p-12 shadow-[0_0_50px_rgba(0,243,255,0.1)] overflow-hidden group"
+      >
+        <div
+          class="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute top-0 right-0 w-4 h-4 border-r-2 border-t-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-4 h-4 border-l-2 border-b-2 border-[#00f3ff]"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-4 h-4 border-r-2 border-b-2 border-[#00f3ff]"
+        ></div>
+
+        <button
+          onclick="closeUplink()"
+          class="absolute top-4 right-4 text-gray-500 hover:text-[#00f3ff] transition-colors font-bold text-xl z-20"
+        >
+          &times;
+        </button>
+
+        <form
+          id="contact-form"
+          onsubmit="submitUplink(event)"
+          class="relative z-10 space-y-6"
+        >
+          <h3 class="text-3xl font-header font-bold text-white mb-2">
+            ESTABLISH <span class="text-[#00f3ff]">CONN.</span>
+          </h3>
+          <p
+            class="text-xs text-gray-400 tracking-widest mb-6 flex justify-between"
+          >
+            <span>SECURE CHANNEL OPEN //</span>
+            <span class="text-[#00f3ff] opacity-50 hidden sm:block"
+              >CTRL + ENTER TO SEND</span
+            >
+          </p>
+
+          <div class="space-y-4">
+            <div>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="OPERATOR NAME"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="CONTACT NODE (EMAIL)"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
+              />
+            </div>
+            <div>
+              <textarea
+                name="message"
+                id="transmission-data"
+                rows="3"
+                required
+                placeholder="TRANSMISSION DATA"
+                class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full bg-[#00f3ff]/10 border border-[#00f3ff] text-[#00f3ff] font-header font-bold py-4 hover:bg-[#00f3ff] hover:text-black transition-all duration-300 uppercase tracking-widest"
+          >
+            SEND PACKET
+          </button>
+        </form>
+
+        <div id="success-state" class="hidden relative z-10 text-center py-10">
+          <div
+            class="inline-flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#00ff41] text-[#00ff41] mb-6 shadow-[0_0_30px_rgba(0,255,65,0.3)]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-10 w-10"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="square"
+                stroke-linejoin="miter"
+                stroke-width="3"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+
+          <h3
+            class="text-2xl md:text-4xl font-header font-bold text-white mb-4 animate-pulse"
+          >
+            TRANSMISSION<br /><span class="text-[#00ff41]">RECEIVED</span>
+          </h3>
+
+          <div
+            class="text-xs text-[#00ff41] font-mono tracking-[3px] border-t border-b border-[#00ff41]/30 py-2 mb-6"
+          >
+            LOG ID: <span id="log-id">8842</span> // STATUS: ACKNOWLEDGED
+          </div>
+
+          <p class="text-gray-400 text-sm max-w-xs mx-auto mb-8">
+            Your application packet has been successfully uploaded to the
+            Syntelo mainframe. Our operators will review your credentials
+            shortly.<br /><br />
+            <span class="text-[#00ff41]"
+              >An automated receipt has been dispatched to your comms
+              node.</span
+            >
+          </p>
+
+          <button
+            type="button"
+            onclick="resetAndCloseUplink()"
+            class="text-xs text-gray-500 hover:text-white tracking-widest uppercase border-b border-transparent hover:border-white transition-colors pb-1"
+          >
+            [ CLOSE TERMINAL ]
+          </button>
+        </div>
+
+        <div
+          class="absolute top-0 left-0 w-full h-1 bg-[#00f3ff]/20 shadow-[0_0_20px_#00f3ff] animate-[scan_3s_linear_infinite] pointer-events-none"
+        ></div>
+      </div>
+    </div>
+
     <script>
+      // --- SMOOTH SCROLLING ---
+      const lenis = new Lenis({ duration: 1.2, smooth: true });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
       function toggleMenu() {
         document.getElementById("mobile-menu").classList.toggle("open");
+      }
+
+      // --- 1. DYNAMIC JOB DATABASE ---
+      // Update this array whenever you have new openings!
+      const jobDatabase = [
+        {
+          title: "REACT OPERATOR",
+          category: "engineering",
+          location: "Remote",
+          level: "Senior",
+          postedDate: "2026-04-23",
+          color: "#00f3ff",
+        },
+        {
+          title: "CYBER ANALYST",
+          category: "security",
+          location: "Hybrid",
+          level: "Level 4",
+          postedDate: "2026-04-20",
+          color: "#bc13fe",
+        },
+        {
+          title: "UX ARCHITECT",
+          category: "design",
+          location: "On-Site",
+          level: "Junior",
+          postedDate: "2026-04-18",
+          color: "#ccff00",
+        },
+        {
+          title: "BACKEND ENGINEER",
+          category: "engineering",
+          location: "Remote",
+          level: "Mid-Level",
+          postedDate: "2026-04-18",
+          color: "#00f3ff",
+        },
+      ];
+
+      // --- 2. DYNAMIC TIME CALCULATOR ---
+      function getTimeAgo(dateString) {
+        const posted = new Date(dateString);
+        const now = new Date();
+
+        // Reset to midnight for clean day-to-day comparisons
+        posted.setHours(0, 0, 0, 0);
+        now.setHours(0, 0, 0, 0);
+
+        const diffInMs = now - posted;
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+        if (diffInDays <= 0) return "POSTED TODAY";
+        if (diffInDays === 1) return "POSTED 1D AGO";
+        if (diffInDays < 7) return `POSTED ${diffInDays}D AGO`;
+
+        const diffInWeeks = Math.floor(diffInDays / 7);
+        return `POSTED ${diffInWeeks}W AGO`;
+      }
+
+      // --- 3. JOB RENDERER ---
+      function renderJobs(filter = "all") {
+        const container = document.getElementById("job-container");
+        container.innerHTML = "";
+
+        const filteredJobs =
+          filter === "all"
+            ? jobDatabase
+            : jobDatabase.filter((j) => j.category === filter);
+
+        filteredJobs.forEach((job) => {
+          const card = document.createElement("div");
+          card.className = "job-card group";
+          card.dataset.category = job.category;
+          card.style.setProperty("--highlight-color", job.color);
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+
+          card.innerHTML = `
+            <div class="flex flex-col gap-2">
+              <h3 class="text-2xl md:text-3xl font-bold group-hover:text-[${
+                job.color
+              }] transition-colors uppercase">
+                ${job.title}
+              </h3>
+              <div class="flex gap-3 flex-wrap">
+                <span class="badge">${job.category}</span>
+                <span class="badge">${job.location}</span>
+                <span class="badge">${job.level}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-6 mt-4 md:mt-0">
+              <span class="text-xs text-gray-500 hidden md:block">${getTimeAgo(
+                job.postedDate
+              )}</span>
+              <button onclick="openUplink('${job.title}')" class="btn-apply">
+                Initialize &rarr;
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // Trigger animations for the newly created elements
+        gsap.to(".job-card", {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power3.out",
+        });
+
+        // Refresh ScrollTrigger to recognize the new heights
+        ScrollTrigger.refresh();
+      }
+
+      // Filter Job Logic
+      function filterJobs(category, btnElement) {
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        btnElement.classList.add("active");
+        renderJobs(category);
+      }
+
+      // --- INITIAL GSAP ANIMATIONS ---
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Render the jobs on page load so GSAP can see them
+      renderJobs();
+
+      gsap.from("#main-nav", {
+        y: -100,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      gsap.fromTo(
+        ".hero-anim",
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          delay: 0.3,
+          ease: "power3.out",
+        }
+      );
+
+      gsap.from(".footer-col", {
+        scrollTrigger: {
+          trigger: "footer",
+          start: "top 90%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+      });
+
+      gsap.to(".footer-copyright", {
+        scrollTrigger: {
+          trigger: "footer",
+          start: "top 90%",
+        },
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: "power3.out",
+      });
+
+      // --- UPLINK MODAL LOGIC ---
+      const modal = document.getElementById("uplink-modal");
+      const form = document.getElementById("contact-form");
+      const successState = document.getElementById("success-state");
+      const transmissionBox = document.getElementById("transmission-data");
+
+      function openUplink(jobTitle = "") {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        form.classList.remove("hidden");
+        successState.classList.add("hidden");
+
+        if (jobTitle) {
+          transmissionBox.value = `INITIATING APPLICATION SEQUENCE.\n\nROLE: ${jobTitle}\n\n[Insert your portfolio/GitHub links and a brief intro here...]`;
+        } else {
+          transmissionBox.value = "";
+        }
+
+        gsap.fromTo(
+          "#uplink-modal > div:nth-child(2)",
+          { scale: 0.9, opacity: 0, filter: "blur(10px)" },
+          {
+            scale: 1,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      function closeUplink() {
+        gsap.to("#uplink-modal > div:nth-child(2)", {
+          scale: 0.9,
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+          },
+        });
+      }
+
+      function resetAndCloseUplink() {
+        closeUplink();
+        setTimeout(() => {
+          form.reset();
+          form.classList.remove("hidden");
+          successState.classList.add("hidden");
+        }, 400);
+      }
+
+      transmissionBox.addEventListener("keydown", function (e) {
+        if (e.ctrlKey && e.key === "Enter") {
+          e.preventDefault();
+          if (form.checkValidity()) {
+            document.getElementById("submit-btn").click();
+          } else {
+            form.reportValidity();
+          }
+        }
+      });
+
+      function submitUplink(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById("submit-btn");
+        const originalText = submitBtn.innerText;
+
+        submitBtn.innerText = "ENCRYPTING DATA...";
+        submitBtn.classList.add("animate-pulse");
+
+        const autoReplyMessage =
+          "TRANSMISSION ACKNOWLEDGED.\n\nYour application packet has been successfully uploaded to the Syntelo mainframe. Our recruiting operators are currently analyzing your credentials and will establish a downlink with you shortly.\n\n— Syntelo Systems";
+
+        fetch("https://formsubmit.co/ajax/careers@syntelo.in", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: form.querySelector('input[name="name"]').value,
+            email: form.querySelector('input[name="email"]').value,
+            message: transmissionBox.value,
+            _subject: "New Application from Syntelo Careers Page",
+            _autoresponse: autoReplyMessage,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            form.classList.add("hidden");
+            successState.classList.remove("hidden");
+            document.getElementById("log-id").innerText =
+              Math.floor(Math.random() * 9000) + 1000;
+            submitBtn.innerText = originalText;
+            submitBtn.classList.remove("animate-pulse");
+
+            gsap.fromTo(
+              "#success-state > *",
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }
+            );
+          })
+          .catch((error) => {
+            console.error("Submission failed:", error);
+            submitBtn.innerText = "ERROR - RETRY";
+            submitBtn.classList.remove("animate-pulse");
+          });
       }
     </script>
   </body>
