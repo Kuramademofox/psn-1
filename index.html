@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&family=Syncopate:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -19,6 +19,10 @@
         --accent-cyan: #00f3ff;
         --accent-purple: #bc13fe;
         --accent-green: #00ff41;
+        /* New Cyberpunk Pallete */
+        --cyber-green-dim: #0a4d22;
+        --cyber-green-mid: #188c3e;
+        --cyber-cyan-dim: #06707a;
       }
       html {
         scroll-behavior: auto;
@@ -141,7 +145,7 @@
         z-index: 60;
       }
 
-      /* MARQUEE */
+      /* --- FIXED MARQUEE --- */
       .marquee-wrapper {
         width: 100%;
         overflow: hidden;
@@ -150,6 +154,7 @@
       }
       .marquee-content {
         display: flex;
+        flex-shrink: 0;
         animation: scrollText 30s linear infinite;
       }
       .marquee-item {
@@ -159,6 +164,7 @@
         color: white;
         margin-right: 2rem;
         opacity: 0.5;
+        flex-shrink: 0;
       }
       @keyframes scrollText {
         0% {
@@ -186,24 +192,90 @@
           opacity: 0;
         }
       }
+
+      /* PRELOADER ENHANCEMENTS */
+      .scanline {
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(6, 112, 122, 0.15) 50%,
+          /* Desaturated cyan */ rgba(0, 0, 0, 0) 100%
+        );
+        opacity: 0.3;
+        position: absolute;
+        bottom: 100%;
+        animation: scanline 8s linear infinite;
+        pointer-events: none;
+      }
+      @keyframes scanline {
+        0% {
+          bottom: 100%;
+        }
+        100% {
+          bottom: -100px;
+        }
+      }
+
+      .text-glitch {
+        animation: textGlitch 0.2s linear infinite;
+      }
+      @keyframes textGlitch {
+        0% {
+          text-shadow: 2px 0 var(--cyber-green-dim),
+            -2px 0 var(--cyber-cyan-dim);
+        }
+        50% {
+          text-shadow: -2px 0 var(--cyber-green-dim),
+            2px 0 var(--cyber-cyan-dim);
+        }
+        100% {
+          text-shadow: 2px 0 var(--cyber-green-dim),
+            -2px 0 var(--cyber-cyan-dim);
+        }
+      }
     </style>
   </head>
   <body>
-    <nav
-      class="fixed top-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-[9999] text-white"
+    <div
+      id="preloader"
+      class="fixed inset-0 bg-[#030303] z-[1000000] flex flex-col justify-end items-start p-6 md:p-12 font-mono text-base md:text-xl overflow-hidden shadow-[inset_0_0_150px_rgba(10,77,34,0.1)]"
     >
-      <a
-        href="index.html"
-        class="flex items-center gap-3 text-2xl font-bold font-header tracking-widest cursor-pointer transition-colors group"
-      >
-        <img
-          src="Logo.jpeg"
-          alt="Syntelo Logo"
-          class="h-10 w-10 rounded-full object-cover border border-white/20 group-hover:border-[#00f3ff] group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all duration-300"
-        />
-        <span class="group-hover:text-[#00f3ff] transition-colors"
-          >Syntelo</span
+      <canvas
+        id="binary-canvas"
+        class="absolute inset-0 pointer-events-none opacity-90"
+      ></canvas>
+
+      <div class="scanline z-0"></div>
+
+      <div
+        id="terminal-output"
+        class="space-y-4 opacity-100 relative z-10"
+      ></div>
+
+      <div class="flex items-center gap-2 mt-4 relative z-10">
+        <span class="text-white font-bold drop-shadow-[0_2px_5px_rgba(0,0,0,1)]"
+          >_</span
         >
+        <div
+          class="w-4 h-6 md:h-7 bg-[#188c3e] animate-pulse drop-shadow-[0_0_8px_rgba(24,140,62,0.8)]"
+        ></div>
+      </div>
+    </div>
+
+    <nav
+      id="main-nav"
+      class="fixed top-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-[9999] text-white opacity-0"
+      style="transform: translateY(-100px)"
+    >
+      <!-- UPDATED HEADER LOGO -->
+      <a href="index.html" class="flex items-center cursor-pointer group">
+        <img
+          src="images/logo.jpeg"
+          alt="Company Logo"
+          class="h-12 w-auto object-contain drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.6)] transition-all duration-300"
+        />
       </a>
       <div
         class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
@@ -285,11 +357,15 @@
           <h1
             class="text-[clamp(3.5rem,8vw,8rem)] leading-[0.9] font-header font-bold mb-6"
           >
-            <span class="scramble-target block" data-value="BUILD TECH."
+            <span
+              class="scramble-target block opacity-0"
+              style="transform: translateY(40px); filter: blur(10px)"
+              data-value="BUILD TECH."
               >BUILD TECH.</span
             >
             <span
-              class="scramble-target block text-gray-600"
+              class="scramble-target block text-gray-600 opacity-0"
+              style="transform: translateY(40px); filter: blur(10px)"
               data-value="HIRE GENIUS."
               >HIRE GENIUS.</span
             >
@@ -312,12 +388,10 @@
             <div class="marquee-content">
               <span class="marquee-item">AI Globe -</span>
               <span class="marquee-item">VJMSOL -</span>
-             
             </div>
             <div class="marquee-content">
+              <span class="marquee-item"> VJM SOL -</span>
               <span class="marquee-item">AI Globe -</span>
-              <span class="marquee-item">VJM SOL -</span>
-              
             </div>
           </div>
         </div>
@@ -326,6 +400,11 @@
       <section class="sticky-section z-30 bg-[#080808] px-6">
         <div class="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
           <div>
+            <p
+              class="text-xs tracking-widest text-[#00f3ff] mb-4 font-bold border-l-2 border-[#00f3ff] pl-3 uppercase"
+            >
+              Built on Enterprise-Grade Frameworks
+            </p>
             <h2 class="text-5xl md:text-7xl font-header mb-6">
               ACTIVE <br /><span class="text-[#00f3ff]">MODULES.</span>
             </h2>
@@ -439,27 +518,61 @@
           <h2
             class="text-4xl md:text-6xl font-header mb-16 text-center text-[#bc13fe] opacity-80"
           >
-            USER_LOGS
+            FEATURED DEPLOYMENTS
           </h2>
           <div class="grid md:grid-cols-2 gap-10">
-            <div class="p-8 border border-white/10 rounded-2xl">
-              <p class="text-xl text-gray-300 mb-6">
-                "Syntelo deployed our platform in record time. The code
-                structure is flawless."
-              </p>
-              <div class="text-[#00f3ff] font-bold text-sm tracking-widest">
-                // CEO, MEDTECH
+            <a
+              href="https://chomp-street.onrender.com/"
+              target="_blank"
+              class="block p-8 border border-white/10 rounded-2xl hover:border-[#00f3ff] hover:bg-white/5 transition-all group cursor-pointer"
+            >
+              <div
+                class="text-[#00f3ff] font-bold text-sm tracking-widest mb-4"
+              >
+                // E-COMMERCE MVP
               </div>
-            </div>
-            <div class="p-8 border border-white/10 rounded-2xl">
-              <p class="text-xl text-gray-300 mb-6">
-                "Recruitment protocols are highly efficient. We acquired a CTO
-                level operator."
+              <h3
+                class="text-3xl font-header font-bold text-white mb-4 group-hover:text-[#00f3ff] transition-colors"
+              >
+                CHOMP STREET
+              </h3>
+              <p class="text-lg text-gray-300 mb-6">
+                A high-performance frontend prototype engineered to streamline
+                digital ordering and maximize UI conversion rates.
               </p>
-              <div class="text-[#bc13fe] font-bold text-sm tracking-widest">
-                // FOUNDER, FINTECH
+              <div
+                class="text-xs font-mono text-gray-500 group-hover:text-white transition-colors"
+              >
+                LAUNCH DEPLOYMENT &rarr;
               </div>
-            </div>
+            </a>
+
+            <a
+              href="https://yaari-4b4o.onrender.com/index.html"
+              target="_blank"
+              class="block p-8 border border-white/10 rounded-2xl hover:border-[#bc13fe] hover:bg-white/5 transition-all group cursor-pointer"
+            >
+              <div
+                class="text-[#bc13fe] font-bold text-sm tracking-widest mb-4 flex justify-between"
+              >
+                <span>// SOCIAL ARCHITECTURE</span>
+                <span class="animate-pulse">STATUS: IN SYNTHESIS</span>
+              </div>
+              <h3
+                class="text-3xl font-header font-bold text-white mb-4 group-hover:text-[#bc13fe] transition-colors"
+              >
+                YAARI
+              </h3>
+              <p class="text-lg text-gray-300 mb-6">
+                A community platform architecture currently undergoing active
+                development. Built for high-speed social scaling.
+              </p>
+              <div
+                class="text-xs font-mono text-gray-500 group-hover:text-white transition-colors"
+              >
+                VIEW CURRENT BUILD &rarr;
+              </div>
+            </a>
           </div>
         </div>
       </section>
@@ -496,18 +609,16 @@
         class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-left"
       >
         <div class="md:col-span-1">
+          <!-- UPDATED FOOTER LOGO -->
           <a
             href="index.html"
-            class="flex items-center gap-3 text-2xl font-bold font-header tracking-widest cursor-pointer transition-colors group"
+            class="flex items-center cursor-pointer group mb-4"
           >
             <img
-              src="Logo.jpeg"
-              alt="Syntelo Logo"
-              class="h-10 w-10 rounded-full object-cover border border-white/20 group-hover:border-[#00f3ff] group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all duration-300"
+              src="images/logo.jpeg"
+              alt="Company Logo"
+              class="h-12 w-auto object-contain drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.6)] transition-all duration-300"
             />
-            <span class="group-hover:text-[#00f3ff] transition-colors"
-              >SYNTELO</span
-            >
           </a>
           <p class="text-gray-500 text-sm mt-4 leading-relaxed font-mono">
             Bridging the gap between silicon and synapse. <br />
@@ -613,6 +724,7 @@
         </div>
       </div>
     </footer>
+
     <div
       id="uplink-modal"
       class="fixed inset-0 z-[10000] hidden items-center justify-center px-4"
@@ -640,7 +752,7 @@
 
         <button
           onclick="closeUplink()"
-          class="absolute top-4 right-4 text-gray-500 hover:text-[#00f3ff] transition-colors font-bold text-xl"
+          class="absolute top-4 right-4 text-gray-500 hover:text-[#00f3ff] transition-colors font-bold text-xl z-20"
         >
           &times;
         </button>
@@ -653,14 +765,20 @@
           <h3 class="text-3xl font-header font-bold text-white mb-2">
             ESTABLISH <span class="text-[#00f3ff]">CONN.</span>
           </h3>
-          <p class="text-xs text-gray-400 tracking-widest mb-6">
-            SECURE CHANNEL OPEN //
+          <p
+            class="text-xs text-gray-400 tracking-widest mb-6 flex justify-between"
+          >
+            <span>SECURE CHANNEL OPEN //</span>
+            <span class="text-[#00f3ff] opacity-50 hidden sm:block"
+              >CTRL + ENTER TO SEND</span
+            >
           </p>
 
           <div class="space-y-4">
             <div>
               <input
                 type="text"
+                name="name"
                 required
                 placeholder="OPERATOR NAME"
                 class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
@@ -669,6 +787,7 @@
             <div>
               <input
                 type="email"
+                name="email"
                 required
                 placeholder="CONTACT NODE (EMAIL)"
                 class="w-full bg-white/5 border border-white/10 p-4 text-white focus:outline-none focus:border-[#00f3ff] transition-colors placeholder-gray-600 font-bold tracking-wider text-sm"
@@ -676,6 +795,8 @@
             </div>
             <div>
               <textarea
+                name="message"
+                id="transmission-data"
                 rows="3"
                 required
                 placeholder="TRANSMISSION DATA"
@@ -731,7 +852,8 @@
           </p>
 
           <button
-            onclick="closeUplink()"
+            type="button"
+            onclick="resetAndCloseUplink()"
             class="text-xs text-gray-500 hover:text-white tracking-widest uppercase border-b border-transparent hover:border-white transition-colors pb-1"
           >
             [ CLOSE TERMINAL ]
@@ -775,11 +897,166 @@
             iteration += 1 / 3;
           }, 30);
         };
-        target.dispatchEvent(new Event("mouseover"));
       });
 
+      // --- VIBRANT BINARY BACKGROUND ANIMATION ---
+      const canvas = document.getElementById("binary-canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Pure Binary character set
+      const binaryChars = "01";
+
+      // Increased size to 24px for heavier, chunkier columns
+      const fontSize = 24;
+      let columns = canvas.width / fontSize;
+      let drops = [];
+      let speeds = [];
+
+      for (let x = 0; x < columns; x++) {
+        drops[x] = Math.random() * canvas.height;
+        speeds[x] = Math.random() * 0.5 + 0.5;
+      }
+
+      function drawBinary() {
+        // Deep background fade for sharper tails
+        ctx.fillStyle = "rgba(3, 3, 3, 0.15)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Forced 900 weight (Black) for ultra-thick characters
+        ctx.font = `900 ${fontSize}px "Space Grotesk", monospace`;
+        ctx.textAlign = "center";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = binaryChars.charAt(
+            Math.floor(Math.random() * binaryChars.length)
+          );
+
+          // Authentic colors: Harsh white leading tip, bright cyber mid-green trail, dimming out
+          ctx.fillStyle =
+            Math.random() > 0.95
+              ? "#ffffff"
+              : Math.random() > 0.6
+              ? "#188c3e"
+              : "#0a4d22";
+
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+            speeds[i] = Math.random() * 0.5 + 0.5;
+          }
+          drops[i] += speeds[i];
+        }
+      }
+
+      let binaryInterval = setInterval(drawBinary, 40);
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = canvas.width / fontSize;
+        drops = [];
+        speeds = [];
+        for (let x = 0; x < columns; x++) {
+          drops[x] = Math.random() * canvas.height;
+          speeds[x] = Math.random() * 0.5 + 0.5;
+        }
+      });
+
+      // --- ADVANCED TERMINAL PRELOADER ---
       gsap.registerPlugin(ScrollTrigger);
-      gsap.to(".reveal-fade", { opacity: 1, duration: 1, delay: 0.5 });
+
+      const terminalOutput = document.getElementById("terminal-output");
+
+      const termLines = [
+        { text: "SYSTEM_INIT...", color: "text-white" },
+        { text: "ALLOCATING MEMORY BLOCKS [OK]", color: "text-gray-400" },
+        { text: "DECRYPTING ASSETS...", color: "text-[#06707a]" },
+        {
+          text: "BYPASSING FIREWALL... ACCESS GRANTED",
+          color: "text-[#188c3e]",
+        },
+        { text: "UPLINK ESTABLISHED.", color: "text-white text-glitch" },
+      ];
+
+      let lineIndex = 0;
+
+      function typeLine(lineData, callback) {
+        const p = document.createElement("p");
+        p.className = `${lineData.color} font-bold tracking-wider drop-shadow-[0_2px_5px_rgba(0,0,0,1)]`;
+
+        p.innerHTML = `<span class="opacity-75 text-[#188c3e] mr-2 drop-shadow-md">[${new Date()
+          .toISOString()
+          .split("T")[1]
+          .slice(0, -1)}]</span>> `;
+        terminalOutput.appendChild(p);
+
+        let charIndex = 0;
+        let typingInterval = setInterval(() => {
+          if (charIndex < lineData.text.length) {
+            p.innerHTML += lineData.text.charAt(charIndex);
+            charIndex++;
+          } else {
+            clearInterval(typingInterval);
+            setTimeout(callback, 200);
+          }
+        }, 15);
+      }
+
+      function processTerminal() {
+        if (lineIndex < termLines.length) {
+          typeLine(termLines[lineIndex], () => {
+            lineIndex++;
+            processTerminal();
+          });
+        } else {
+          setTimeout(startMainAnimations, 800);
+        }
+      }
+
+      window.onload = () => {
+        setTimeout(processTerminal, 300);
+      };
+
+      function startMainAnimations() {
+        clearInterval(binaryInterval);
+
+        const loadTl = gsap.timeline();
+
+        // Fade out preloader
+        loadTl
+          .to("#preloader", { y: "-100%", duration: 0.8, ease: "power3.inOut" })
+          // Drop down nav
+          .to("#main-nav", { opacity: 1, duration: 0.1 }, "-=0.3")
+          .to("#main-nav", { y: 0, duration: 1, ease: "power3.out" }, "-=0.3")
+          // Reveal and scramble hero text
+          .to(
+            ".scramble-target",
+            {
+              y: 0,
+              opacity: 1,
+              filter: "blur(0px)",
+              stagger: 0.2,
+              duration: 1,
+              ease: "power3.out",
+              onComplete: () => {
+                document
+                  .querySelectorAll(".scramble-target")
+                  .forEach((t) => t.dispatchEvent(new Event("mouseover")));
+              },
+            },
+            "-=0.8"
+          )
+          // Reveal paragraph
+          .to(
+            ".reveal-fade",
+            { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
+            "-=0.6"
+          );
+      }
 
       document.querySelectorAll(".sticky-section").forEach((sec, i) => {
         if (i === 6) return;
@@ -796,17 +1073,14 @@
         });
       });
 
-      // --- NEW UPLINK MODAL LOGIC ---
-
+      // --- UPLINK MODAL LOGIC ---
       const modal = document.getElementById("uplink-modal");
       const form = document.getElementById("contact-form");
       const successState = document.getElementById("success-state");
-      const submitBtn = document.getElementById("submit-btn");
 
       function openUplink() {
         modal.classList.remove("hidden");
         modal.classList.add("flex");
-        // Reset state when opening
         form.classList.remove("hidden");
         successState.classList.add("hidden");
 
@@ -836,36 +1110,86 @@
         });
       }
 
+      function resetAndCloseUplink() {
+        closeUplink();
+        setTimeout(() => {
+          form.reset();
+          form.classList.remove("hidden");
+          successState.classList.add("hidden");
+        }, 400);
+      }
+
+      // --- CTRL + ENTER TO SUBMIT LOGIC ---
+      document
+        .getElementById("transmission-data")
+        .addEventListener("keydown", function (e) {
+          if (e.ctrlKey && e.key === "Enter") {
+            e.preventDefault();
+            // Check if the form is fully filled out before triggering the click
+            if (form.checkValidity()) {
+              document.getElementById("submit-btn").click();
+            } else {
+              form.reportValidity(); // This forces the browser to show the "please fill out this field" tooltip
+            }
+          }
+        });
+
+      // --- AJAX BACKGROUND SUBMISSION ---
       function submitUplink(e) {
         e.preventDefault();
 
-        // 1. Simulate Loading State
+        const submitBtn = document.getElementById("submit-btn");
         const originalText = submitBtn.innerText;
+
+        // Loading State
         submitBtn.innerText = "ENCRYPTING DATA...";
         submitBtn.classList.add("animate-pulse");
 
-        // 2. Simulate Network Delay
-        setTimeout(() => {
-          // 3. Hide Form / Show Success
-          form.classList.add("hidden");
-          successState.classList.remove("hidden");
+        // The Auto-Responder message they will receive in their email
+        const autoReplyMessage =
+          "TRANSMISSION ACKNOWLEDGED.\n\nYour data packet has been successfully uploaded to the Syntelo mainframe. Our operators are reviewing your transmission and will establish a downlink with you shortly.\n\n— Syntelo Systems";
 
-          // Generate random Log ID
-          document.getElementById("log-id").innerText =
-            Math.floor(Math.random() * 9000) + 1000;
+        // Fetch API request to FormSubmit
+        fetch("https://formsubmit.co/ajax/careers@syntelo.in", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: form.querySelector('input[name="name"]').value,
+            email: form.querySelector('input[name="email"]').value,
+            message: form.querySelector('textarea[name="message"]').value,
+            _subject: "New Transmission from Syntelo Uplink",
+            _autoresponse: autoReplyMessage,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Hide Form, Show Success State
+            form.classList.add("hidden");
+            successState.classList.remove("hidden");
 
-          // Reset button for next time
-          submitBtn.innerText = originalText;
-          submitBtn.classList.remove("animate-pulse");
-          form.reset();
+            // Generate Random Log ID
+            document.getElementById("log-id").innerText =
+              Math.floor(Math.random() * 9000) + 1000;
 
-          // Success Animation
-          gsap.fromTo(
-            "#success-state > *",
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }
-          );
-        }, 1500);
+            // Reset Button
+            submitBtn.innerText = originalText;
+            submitBtn.classList.remove("animate-pulse");
+
+            // Success Animation
+            gsap.fromTo(
+              "#success-state > *",
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }
+            );
+          })
+          .catch((error) => {
+            console.error("Submission failed:", error);
+            submitBtn.innerText = "ERROR - RETRY";
+            submitBtn.classList.remove("animate-pulse");
+          });
       }
     </script>
   </body>
