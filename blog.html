@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Syntelo | Transmissions</title>
+    <title>Syntelo | Transmissions (Standby)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
@@ -16,12 +16,25 @@
         --accent-purple: #bc13fe;
         --accent-lime: #ccff00;
       }
+
       body {
         background-color: var(--bg-deep);
         color: white;
         font-family: "Space Grotesk", sans-serif;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        /* CRISP GEOMETRIC GRID */
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: center center;
       }
+
       .font-header {
         font-family: "Syncopate", sans-serif;
         text-transform: uppercase;
@@ -30,64 +43,167 @@
       /* NAVIGATION */
       nav {
         background: rgba(3, 3, 3, 0.95);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         transition: 0.3s;
       }
-      .nav-item { position: relative; height: 100%; display: flex; align-items: center; }
-      .dropdown {
-        position: absolute; top: 100%; left: 0; background: #0a0a0a; border: 1px solid rgba(255, 255, 255, 0.1);
-        min-width: 280px; display: none; flex-direction: column; padding: 10px 0; z-index: 100; box-shadow: 0 10px 30px black;
+      .nav-item {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
       }
-      .nav-item:hover .dropdown { display: flex; animation: slideUp 0.3s forwards; }
-      .dropdown a { padding: 12px 20px; font-size: 11px; text-transform: uppercase; color: #888; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.2s; }
-      .dropdown a:hover { background: var(--accent-cyan); color: black; padding-left: 25px; }
-      @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-      #mobile-menu { transform: translateX(100%); transition: transform 0.4s ease-in-out; }
-      #mobile-menu.open { transform: translateX(0); }
-      .btn-glitch { padding: 12px 30px; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: "Syncopate"; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; transition: 0.3s; background: transparent; }
-      .btn-glitch:hover { background: var(--accent-cyan); color: black; box-shadow: 0 0 20px var(--accent-cyan); }
+      .dropdown-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding-top: 15px;
+        display: none;
+        z-index: 100;
+      }
+      .dropdown {
+        background: #0a0a0a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: 280px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+        box-shadow: 0 10px 30px black;
+      }
+      .nav-item:hover .dropdown-wrapper {
+        display: block;
+        animation: slideUp 0.2s forwards ease-out;
+      }
+      .dropdown a {
+        padding: 12px 20px;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #888;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+      }
+      .dropdown a:hover {
+        background: var(--accent-cyan);
+        color: black;
+        padding-left: 25px;
+      }
 
-      /* BLOG CARDS */
-      .blog-card { background: #0a0a0a; border: 1px solid #222; overflow: hidden; transition: all 0.4s ease; display: none; flex-direction: column; height: 100%; }
-      .blog-card.active { display: flex; animation: fadeIn 0.5s ease forwards; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-      .blog-card:hover { border-color: var(--accent-cyan); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-      .card-image-wrap { height: 240px; width: 100%; position: relative; overflow: hidden; background: #000; border-bottom: 1px solid #222; transition: border-color 0.3s; }
-      .card-image { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: grayscale(100%) contrast(1.1); transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-      .blog-card:hover .card-image { opacity: 1; filter: grayscale(0%) contrast(1); transform: scale(1.05); }
-      .blog-card:hover .card-image-wrap { border-bottom-color: var(--accent-cyan); }
-      .tag { font-size: 10px; text-transform: uppercase; border: 1px solid #333; padding: 4px 10px; color: #888; letter-spacing: 1px; transition: 0.3s; }
-      .blog-card:hover .tag { border-color: white; color: white; }
+      #mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      #mobile-menu.open {
+        transform: translateX(0);
+      }
 
-      /* TERMINAL SEARCH */
-      .terminal-search { background: transparent; border: 1px solid #333; font-family: "Space Grotesk", monospace; padding: 15px 20px; color: var(--accent-cyan); width: 100%; transition: 0.3s; }
-      .terminal-search:focus { outline: none; border-color: var(--accent-cyan); background: rgba(0, 243, 255, 0.05); }
-      .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #555; }
+      .btn-glitch {
+        padding: 12px 30px;
+        border: 1px solid var(--accent-cyan);
+        color: var(--accent-cyan);
+        font-family: "Syncopate";
+        font-weight: 700;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        transition: 0.3s;
+        background: transparent;
+      }
+      .btn-glitch:hover {
+        background: var(--accent-cyan);
+        color: black;
+        box-shadow: 0 0 15px var(--accent-cyan);
+      }
 
-      /* PAGINATION BUTTONS */
-      .page-btn { px-4 py-2 border border-[#333] text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed }
-      .page-btn.active { background-color: var(--accent-cyan); color: black; font-weight: bold; border-color: var(--accent-cyan); }
-      .page-btn:not(.active):not(:disabled):hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+      /* --- CRISP TERMINAL EFFECTS --- */
+      .terminal-box {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid rgba(0, 243, 255, 0.3);
+        backdrop-filter: blur(5px);
+        position: relative;
+      }
+
+      /* Corner brackets for sharp tech look */
+      .terminal-box::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 10px;
+        height: 10px;
+        border-top: 2px solid var(--accent-cyan);
+        border-left: 2px solid var(--accent-cyan);
+      }
+      .terminal-box::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 10px;
+        height: 10px;
+        border-bottom: 2px solid var(--accent-cyan);
+        border-right: 2px solid var(--accent-cyan);
+      }
+
+      /* Sharp blinking cursor */
+      .cursor-block {
+        display: inline-block;
+        width: 10px;
+        height: 1.2em;
+        background-color: var(--accent-cyan);
+        vertical-align: middle;
+        animation: blink 1s step-end infinite;
+        margin-left: 4px;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* Sharp text reveal */
+      .typewriter-text {
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid transparent;
+        animation: typing 2s steps(40, end) forwards;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
     </style>
   </head>
-  <body class="pt-24 px-6 md:px-12">
+  <body class="pt-24">
     <nav
       class="fixed top-0 left-0 w-full px-6 md:px-12 h-20 flex justify-between items-center z-[100] text-white"
     >
-      <a
-        href="index.html"
-        class="flex items-center gap-3 text-2xl font-bold font-header tracking-widest cursor-pointer transition-colors group"
-      >
+      <!-- UPDATED HEADER LOGO -->
+      <a href="index.html" class="flex items-center cursor-pointer group">
         <img
-          src="Logo.jpeg"
-          alt="Syntelo Logo"
-          class="h-10 w-10 rounded-full object-cover border border-white/20 group-hover:border-[#00f3ff] group-hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all duration-300"
+          src="images/logo.jpeg"
+          alt="Company Logo"
+          class="h-12 w-auto object-contain drop-shadow-sm group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.6)] transition-all duration-300"
         />
-        <span class="group-hover:text-[#00f3ff] transition-colors"
-          >SYNTELO</span
-        >
       </a>
       <div
         class="hidden lg:flex h-full gap-8 text-sm uppercase tracking-[2px] font-bold items-center"
@@ -98,20 +214,34 @@
         <div class="nav-item group h-full">
           <a
             href="services.html"
-            class="hover:text-[#00f3ff] transition-colors py-6 block"
+            class="hover:text-[#00f3ff] transition-colors h-full flex items-center"
             >Services</a
           >
-          <div class="dropdown">
-            <a href="services.html">Web Development</a>
-            <a href="services.html">Mobile Apps</a>
+          <div class="dropdown-wrapper">
+            <div class="dropdown">
+              <a href="services.html">Web Development</a>
+              <a href="services.html">Mobile Apps</a>
+              <a href="services.html">Software Testing</a>
+            </div>
           </div>
         </div>
         <a href="careers.html" class="hover:text-[#00f3ff] transition-colors"
           >Careers</a
         >
-        <a href="about.html" class="hover:text-[#bc13fe] transition-colors"
-          >About</a
-        >
+        <div class="nav-item group h-full">
+          <a
+            href="about.html"
+            class="hover:text-[#bc13fe] transition-colors h-full flex items-center"
+            >About</a
+          >
+          <div class="dropdown-wrapper">
+            <div class="dropdown">
+              <a href="about.html#us">About Us</a>
+              <a href="about.html#team">Our Team</a>
+              <a href="contact.html">Contact Us</a>
+            </div>
+          </div>
+        </div>
         <a href="blog.html" class="text-[#ccff00] transition-colors">Blog</a>
       </div>
       <button
@@ -140,389 +270,91 @@
       <a href="blog.html" class="text-[#ccff00]">Blog</a>
     </div>
 
-    <section class="max-w-4xl mb-24 mt-10">
-      <h1 class="text-6xl md:text-8xl font-header font-bold mb-8">
-        TRANSMISSION <br />
-        LOGS.
-      </h1>
-      <div
-        class="bg-[#ccff00]/10 p-10 border border-[#ccff00] hover:shadow-[0_0_40px_rgba(204,255,0,0.1)] transition-shadow duration-500"
-      >
-        <p class="text-xl leading-relaxed text-white">
-          Decrypted data logs, industry insights, and technical updates from the
-          Syntelo network. We broadcast the signals that matter.
-        </p>
-      </div>
-    </section>
-
-    <div class="max-w-6xl mx-auto mb-16 flex flex-col md:flex-row gap-6">
-      <div class="relative w-full md:w-2/3">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="> QUERY DATABASE..."
-          class="terminal-search text-base md:text-lg"
-        />
-        <span class="search-icon">🔍</span>
-      </div>
-      <div class="w-full md:w-1/3 flex gap-2">
-        <button
-          class="flex-1 border border-[#333] hover:border-[#ccff00] hover:text-[#ccff00] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
-          onclick="filterLogs('all')"
-        >
-          ALL
-        </button>
-        <button
-          class="flex-1 border border-[#333] hover:border-[#00f3ff] hover:text-[#00f3ff] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
-          onclick="filterLogs('TECH')"
-        >
-          TECH
-        </button>
-        <button
-          class="flex-1 border border-[#333] hover:border-[#bc13fe] hover:text-[#bc13fe] transition-colors text-xs md:text-sm font-header py-3 md:py-0"
-          onclick="filterLogs('CULTURE')"
-        >
-          CULTURE
-        </button>
-      </div>
-    </div>
-
-    <div
-      id="blog-grid"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12"
+    <main
+      class="flex-grow flex flex-col items-center justify-center text-center px-6 mt-10 z-10"
     >
-      <article class="blog-card group" data-category="TECH">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop"
-            alt="Cyber"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#00f3ff] text-[#00f3ff]">CYBERSEC</span
-            ><span class="tag">LOG #0452</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#00f3ff] transition-colors"
-          >
-            Zero Trust Architecture
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Why traditional perimeter security is failing and how to implement a
-            trust-no-one protocol.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#00f3ff] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
+      <div
+        class="border border-[#333] px-4 py-1 flex items-center gap-2 mb-10 text-[10px] font-mono tracking-widest text-gray-500 uppercase bg-black"
+      >
+        <div class="w-2 h-2 bg-[#ccff00] rounded-none"></div>
+        <span>System Status: Standby</span>
+      </div>
 
-      <article class="blog-card group" data-category="TECH">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop"
-            alt="AI"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#bc13fe] text-[#bc13fe]">AI / ML</span
-            ><span class="tag">LOG #0451</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#bc13fe] transition-colors"
-          >
-            The Neural Horizon
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Exploring the ethical implications of autonomous coding agents in
-            2026.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#bc13fe] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
+      <h1
+        class="text-6xl md:text-8xl font-header font-bold mb-8 tracking-widest text-white leading-none"
+      >
+        UPLINK <br />
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"
+          >PENDING</span
+        >
+      </h1>
 
-      <article class="blog-card group" data-category="TECH">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop"
-            alt="Design"
-            class="card-image"
-          />
+      <div
+        class="terminal-box p-6 md:p-8 max-w-2xl w-full text-left mb-12 shadow-[0_10px_40px_rgba(0,243,255,0.05)]"
+      >
+        <div class="flex gap-2 mb-4 border-b border-[#333] pb-4">
+          <span
+            class="text-xs font-mono text-[#00f3ff] uppercase tracking-widest"
+            >SYNTELO
+          </span>
+          <span class="text-xs font-mono text-gray-600 ml-auto">TERMINAL</span>
         </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#ccff00] text-[#ccff00]">DESIGN</span
-            ><span class="tag">LOG #0450</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#ccff00] transition-colors"
-          >
-            Brutalism Reloaded
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Web design trends shifting back to raw data presentation and high
-            contrast.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#ccff00] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
 
-      <article class="blog-card group" data-category="TECH">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop"
-            alt="Code"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-white text-white">DEV</span
-            ><span class="tag">LOG #0449</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-white transition-colors"
-          >
-            React Server Components
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Optimizing data loads for high-traffic enterprise applications.
-          </p>
-          <a
-            href="post.html"
-            class="text-white font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
+        <div
+          class="font-mono text-sm md:text-base text-gray-300 leading-relaxed"
+        >
+          <p class="text-gray-500 mb-2">> INIT BROADCAST_MODULE...</p>
+          <p class="text-[#ccff00] mb-4">> STATUS: UPGRADE IN PROGRESS</p>
 
-      <article class="blog-card group" data-category="TECH">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop"
-            alt="Chip"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#00f3ff] text-[#00f3ff]">HARDWARE</span
-            ><span class="tag">LOG #0448</span>
+          <div class="flex items-center">
+            <span class="text-[#00f3ff] mr-2">></span>
+            <span class="typewriter-text inline-block"
+              >Assembling decrypted data logs and industry insights.</span
+            >
+            <span class="cursor-block"></span>
           </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#00f3ff] transition-colors"
-          >
-            Quantum Leaps
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Preparing existing infrastructure for the post-silicon era.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#00f3ff] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
         </div>
-      </article>
+      </div>
 
-      <article class="blog-card group" data-category="CULTURE">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1000&auto=format&fit=crop"
-            alt="Typing"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#bc13fe] text-[#bc13fe]">CULTURE</span
-            ><span class="tag">LOG #0447</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#bc13fe] transition-colors"
-          >
-            The Remote Protocol
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            How Syntelo maintains team cohesion across 12 different time zones.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#bc13fe] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
-
-      <article class="blog-card group" data-category="CULTURE">
-        <div class="card-image-wrap">
-          <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop"
-            alt="Meeting"
-            class="card-image"
-          />
-        </div>
-        <div class="p-8 flex flex-col flex-grow">
-          <div class="flex gap-2 mb-4">
-            <span class="tag border-[#ccff00] text-[#ccff00]">TEAM</span
-            ><span class="tag">LOG #0446</span>
-          </div>
-          <h3
-            class="text-2xl font-bold mb-4 group-hover:text-[#ccff00] transition-colors"
-          >
-            Agile Done Right
-          </h3>
-          <p class="text-gray-400 text-sm mb-6 flex-grow">
-            Why daily standups might be killing your engineering team's
-            productivity.
-          </p>
-          <a
-            href="post.html"
-            class="text-[#ccff00] font-header text-xs tracking-widest hover:underline flex items-center gap-2 mt-auto"
-            >READ LOG <span>&rarr;</span></a
-          >
-        </div>
-      </article>
-    </div>
-
-    <div
-      class="flex justify-center gap-2 md:gap-4 mb-20 font-header text-xs md:text-sm"
-      id="pagination-controls"
-    ></div>
+      <a
+        href="index.html"
+        class="font-header text-xs tracking-widest text-gray-400 hover:text-[#00f3ff] transition-colors flex items-center gap-2"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="square"
+            stroke-linejoin="miter"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+        RETURN TO BASE
+      </a>
+    </main>
 
     <footer
-      class="border-t border-[#222] bg-[#050505] pt-16 pb-8 relative z-70 overflow-hidden"
+      class="border-t border-[#222] bg-[#050505] pt-12 pb-6 relative z-70 overflow-hidden mt-auto"
     >
-      <div class="border-t border-[#111] pt-8 mt-12">
-        <div
-          class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center"
-        >
-          <p class="text-xs text-gray-600 font-mono">
-            © 2026 Syntelo SYSTEMS. ALL RIGHTS RESERVED.
-          </p>
-        </div>
+      <div
+        class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center gap-4 text-center"
+      >
+        <p class="text-xs text-gray-600 font-mono tracking-widest">
+          © 2026 Syntelo SYSTEMS. ALL RIGHTS RESERVED.
+        </p>
       </div>
     </footer>
 
     <script>
-      // 1. Mobile Menu Toggle
       function toggleMenu() {
         document.getElementById("mobile-menu").classList.toggle("open");
       }
-
-      // 2. Pagination & Filtering Logic
-      const articlesPerPage = 3; // Change this number to show more/less articles per page
-      let currentPage = 1;
-      let currentCategory = "all";
-      let searchQuery = "";
-
-      // Get all article DOM elements
-      const allArticles = Array.from(document.querySelectorAll(".blog-card"));
-
-      function renderPagination() {
-        // Step 1: Filter the articles based on Category AND Search Query
-        const filteredArticles = allArticles.filter((article) => {
-          const title = article.querySelector("h3").innerText.toLowerCase();
-          const category = article.getAttribute("data-category");
-
-          const matchesSearch = title.includes(searchQuery.toLowerCase());
-          const matchesCategory =
-            currentCategory === "all" || category === currentCategory;
-
-          return matchesSearch && matchesCategory;
-        });
-
-        const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
-
-        // Hide all articles first
-        allArticles.forEach((article) => article.classList.remove("active"));
-
-        // Step 2: Calculate which items to show on the current page
-        const startIndex = (currentPage - 1) * articlesPerPage;
-        const endIndex = startIndex + articlesPerPage;
-
-        // Show only the items for the current page
-        filteredArticles.slice(startIndex, endIndex).forEach((article) => {
-          article.classList.add("active");
-        });
-
-        // Step 3: Build the Pagination Buttons HTML
-        const controlsContainer = document.getElementById(
-          "pagination-controls"
-        );
-        controlsContainer.innerHTML = ""; // Clear existing buttons
-
-        if (totalPages <= 1) return; // Hide pagination if only 1 page exists
-
-        // Create PREV button
-        const prevBtn = document.createElement("button");
-        prevBtn.className = "page-btn px-4 py-2 border border-[#333]";
-        prevBtn.innerText = "< PREV";
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.onclick = () => {
-          currentPage--;
-          renderPagination();
-        };
-        controlsContainer.appendChild(prevBtn);
-
-        // Create Number buttons
-        for (let i = 1; i <= totalPages; i++) {
-          const numBtn = document.createElement("button");
-          numBtn.className = `page-btn px-4 py-2 border border-[#333] ${
-            i === currentPage ? "active" : ""
-          }`;
-          numBtn.innerText = i;
-          numBtn.onclick = () => {
-            currentPage = i;
-            renderPagination();
-          };
-          controlsContainer.appendChild(numBtn);
-        }
-
-        // Create NEXT button
-        const nextBtn = document.createElement("button");
-        nextBtn.className = "page-btn px-4 py-2 border border-[#333]";
-        nextBtn.innerText = "NEXT >";
-        nextBtn.disabled = currentPage === totalPages;
-        nextBtn.onclick = () => {
-          currentPage++;
-          renderPagination();
-        };
-        controlsContainer.appendChild(nextBtn);
-      }
-
-      // Filter Category Function (triggered by HTML buttons)
-      function filterLogs(category) {
-        currentCategory = category;
-        currentPage = 1; // Reset to page 1 when filter changes
-        renderPagination();
-      }
-
-      // Search Bar Event Listener
-      document.getElementById("searchInput").addEventListener("input", (e) => {
-        searchQuery = e.target.value;
-        currentPage = 1; // Reset to page 1 when typing
-        renderPagination();
-      });
-
-      // Initialize the page on first load
-      document.addEventListener("DOMContentLoaded", () => {
-        renderPagination();
-      });
     </script>
   </body>
 </html>
